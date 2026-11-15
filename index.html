@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Pink Ponk Knowledge</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#0b1220; --bg2:#1e293b; --bg3:#334155;
+  --text:#e2e8f0; --muted:#94a3b8; --line:rgba(148,163,184,.18);
+  --acc:#60a5fa; --acc2:#93c5fd; --accD:#2563eb;
+  --good:#22c55e; --bad:#f43f5e; --gold:#fbbf24;
+  --glass:rgba(30,41,59,.55);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+html{background:#0b1220}
+body{
+  font-family:"Outfit",system-ui,sans-serif;color:var(--text);
+  background:var(--bg1);min-height:100vh;overflow-x:hidden;
+}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg3) 100%)}
+.orb{position:fixed;border-radius:50%;filter:blur(70px);opacity:.35;z-index:0;pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
+.orb.a{width:320px;height:320px;background:#3b82f6;top:-80px;left:-90px}
+.orb.b{width:280px;height:280px;background:#64748b;bottom:-60px;right:-80px;animation-delay:-6s}
+.orb.c{width:200px;height:200px;background:#0ea5e9;top:45%;left:60%;opacity:.18;animation-delay:-11s}
+@keyframes drift{to{transform:translate(40px,30px) scale(1.15)}}
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:16px 16px 48px}
+.screen{display:none;animation:pop .4s cubic-bezier(.2,.9,.3,1.2)}
+.screen.on{display:block}
+@keyframes pop{from{transform:translateY(10px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+
+.card{background:var(--glass);border:1px solid var(--line);border-radius:24px;padding:16px;margin-bottom:14px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 12px 32px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+h1{font-size:2.5rem;line-height:1;margin:4px 0 6px;text-align:center;font-weight:900;letter-spacing:-1px;
+  background:linear-gradient(90deg,#f1f5f9,#93c5fd 50%,#cbd5e1);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{text-align:center;margin:0 0 16px;font-size:.8rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);font-weight:600}
+h2{font-size:1.1rem;margin:0 0 10px;font-weight:800;display:flex;align-items:center;gap:8px}
+h2 small{font-weight:500;color:var(--muted);font-size:.8rem}
+
+/* ping pong table */
+.table{position:relative;height:84px;margin:6px auto 4px;max-width:320px}
+.surface{position:absolute;left:0;right:0;bottom:6px;height:10px;border-radius:5px;background:linear-gradient(180deg,#475569,#1e293b);box-shadow:0 6px 14px rgba(0,0,0,.4)}
+.surface::after{content:"";position:absolute;left:4%;right:4%;top:4px;height:1px;background:rgba(255,255,255,.4)}
+.net{position:absolute;left:50%;bottom:14px;width:3px;height:30px;background:linear-gradient(#e2e8f0,#94a3b8);transform:translateX(-50%);border-radius:2px}
+.ball{position:absolute;width:20px;height:20px;border-radius:50%;bottom:16px;
+  background:radial-gradient(circle at 32% 28%,#fff 0,#e0f2fe 35%,#93c5fd 75%,#3b82f6 100%);box-shadow:0 0 16px rgba(147,197,253,.7);animation:ponk 1.6s infinite ease-in-out}
+@keyframes ponk{0%{left:4%;bottom:16px}25%{left:27%;bottom:66px}50%{left:calc(92% - 20px);bottom:16px}75%{left:65%;bottom:66px}100%{left:4%;bottom:16px}}
+
+/* players */
+.prow{border:1px solid var(--line);border-radius:18px;padding:10px 12px;margin-bottom:10px;background:rgba(15,23,42,.35);transition:.2s}
+.prow.on{border-color:rgba(96,165,250,.7);background:rgba(37,99,235,.14);box-shadow:0 0 0 3px rgba(96,165,250,.12)}
+.phead{display:flex;align-items:center;gap:10px}
+.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:1.7rem;background:linear-gradient(145deg,#334155,#1e293b);border:1px solid var(--line);flex:0 0 46px}
+.pinfo{flex:1;min-width:0}
+.pinfo b{font-size:1.15rem;display:block}
+.pinfo span{font-size:.82rem;color:var(--muted)}
+.rm{border:none;background:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:4px}
+.pool{margin-top:10px;display:none}
+.prow.on .pool{display:block}
+.pool .lbl{font-size:.78rem;color:var(--muted);margin-bottom:6px;letter-spacing:.5px}
+.yrs{display:flex;flex-wrap:wrap;gap:6px}
+.yr{border:1px solid var(--line);background:rgba(15,23,42,.5);color:var(--text);border-radius:999px;padding:6px 11px;font:inherit;font-size:.88rem;font-weight:700;cursor:pointer}
+.yr.on{background:linear-gradient(180deg,#60a5fa,#2563eb);border-color:transparent;box-shadow:0 4px 12px rgba(37,99,235,.4)}
+.addbox{border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
+.addbox .lbl,.pool .lbl{font-size:.78rem;color:var(--muted);margin:10px 0 6px;letter-spacing:.5px;font-weight:600}
+.emojis{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:6px;max-height:156px;overflow-y:auto;padding:2px}
+.em{font-size:1.5rem;height:42px;border-radius:12px;border:1px solid var(--line);background:rgba(15,23,42,.5);cursor:pointer;padding:0}
+.em.on{border-color:var(--acc);background:rgba(37,99,235,.35);box-shadow:0 0 0 3px rgba(96,165,250,.3);transform:scale(1.08)}
+.nameIn{width:100%;font:inherit;font-size:1.05rem;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(15,23,42,.6);color:var(--text)}
+.nameIn::placeholder{color:#64748b}
+.yr.adultChip{padding-left:13px;padding-right:13px}
+.empty{text-align:center;color:var(--muted);padding:10px 4px 4px;font-size:.95rem}
+.creator{border-top:1px solid var(--line);margin-top:8px;padding-top:6px}
+.ctitle{font-weight:900;font-size:1.05rem;letter-spacing:.3px;margin:10px 0 0;display:flex;justify-content:space-between;align-items:center}
+.stage{position:relative;display:flex;flex-direction:column;align-items:center;padding:22px 0 8px;margin:8px 0 4px;border-radius:22px;
+  background:radial-gradient(circle at 50% 38%,rgba(96,165,250,.22),transparent 60%),rgba(2,6,23,.35);border:1px solid var(--line);overflow:hidden}
+.stage::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.5) 1px,transparent 1.5px);background-size:26px 26px;opacity:.12;animation:stars 30s linear infinite}
+@keyframes stars{to{background-position:260px 130px}}
+.stage .spot{position:absolute;bottom:34%;width:150px;height:24px;border-radius:50%;background:radial-gradient(rgba(0,0,0,.45),transparent 70%)}
+.pvname{margin-top:12px;font-size:1.6rem;font-weight:900;background:linear-gradient(90deg,#f8fafc,var(--pg,#93c5fd));-webkit-background-clip:text;background-clip:text;color:transparent;min-height:1.2em;text-align:center;padding:0 8px}
+.pvtag{font-size:.82rem;color:var(--muted);margin-top:2px}
+.ava{position:relative;isolation:isolate;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;line-height:1;
+  box-shadow:0 8px 18px rgba(0,0,0,.35),0 0 18px -2px var(--g1)}
+.ava .core{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;z-index:0;
+  background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.45),transparent 45%),linear-gradient(145deg,var(--g1),var(--g2));box-shadow:inset 0 0 0 2px rgba(255,255,255,.18)}
+.ava .acc{z-index:1}
+.ava .acc{position:absolute;top:-16%;right:-14%;font-size:.5em;transform:rotate(16deg);filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}
+.s-xs{width:30px;height:30px;font-size:1.05rem}.s-sm{width:46px;height:46px;font-size:1.65rem}.s-md{width:62px;height:62px;font-size:2.3rem}.s-lg{width:96px;height:96px;font-size:3.6rem}.s-xl{width:124px;height:124px;font-size:4.7rem}
+.s-xl::before,.s-lg.ring::before{content:"";position:absolute;inset:-9px;border-radius:50%;z-index:-1;
+  background:conic-gradient(from 0deg,var(--g1),transparent 30%,var(--g2),transparent 65%,var(--g1));animation:spin 3.5s linear infinite;filter:blur(1px)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ava.float{animation:floaty 3s ease-in-out infinite}
+@keyframes floaty{50%{transform:translateY(-8px)}}
+.ava.boing{animation:boing .55s cubic-bezier(.3,1.8,.5,1)}
+@keyframes boing{0%{transform:scale(.6) rotate(-12deg)}100%{transform:none}}
+.ava.face{box-shadow:none;background:none}
+.ava.face::before{display:none}
+.ava.face svg{width:118%;height:118%;margin:-9%;overflow:visible;filter:drop-shadow(0 5px 8px rgba(0,0,0,.4)) drop-shadow(0 0 10px color-mix(in srgb,var(--g1) 55%,transparent))}
+.ava.face.s-xl svg{filter:drop-shadow(0 10px 14px rgba(0,0,0,.45)) drop-shadow(0 0 22px color-mix(in srgb,var(--g1) 70%,transparent))}
+.fopts{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:8px;padding:4px 2px}
+.fopt{border:1px solid var(--line);background:rgba(15,23,42,.5);border-radius:16px;padding:6px 2px 4px;cursor:pointer;color:var(--muted);font:inherit;font-size:.7rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .12s}
+.fopt svg{width:50px;height:50px;overflow:visible}
+.fopt.on{border-color:var(--acc);background:rgba(37,99,235,.3);color:#fff;box-shadow:0 0 0 3px rgba(96,165,250,.3);transform:scale(1.05)}
+.fopt:active{transform:scale(.94)}
+.fcol{width:50px;height:50px;border-radius:50%;border:2px solid rgba(255,255,255,.2);box-shadow:inset -6px -8px 0 rgba(0,0,0,.12),inset 6px 6px 0 rgba(255,255,255,.25)}
+.partTabs .tab{font-size:.85rem}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:rgba(15,23,42,.5);color:var(--text);border-radius:999px;padding:7px 12px;font:inherit;font-weight:700;font-size:.88rem;cursor:pointer}
+.tab.on{background:linear-gradient(180deg,#60a5fa,#2563eb);border-color:transparent;box-shadow:0 4px 12px rgba(37,99,235,.4)}
+.auras{display:flex;gap:9px;flex-wrap:wrap}
+.aura{width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,.15);cursor:pointer;padding:0;background:linear-gradient(145deg,var(--g1),var(--g2));transition:transform .15s}
+.aura.on{transform:scale(1.15);border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.2),0 0 16px var(--g1)}
+.accs{display:flex;gap:6px;flex-wrap:wrap}
+.accs .em{width:44px}
+.namerow{display:flex;gap:8px}
+.namerow .nameIn{flex:1}
+.dice{border:1px solid var(--line);background:rgba(15,23,42,.6);border-radius:14px;font-size:1.4rem;width:50px;cursor:pointer}
+.dice:active{transform:rotate(90deg)}
+.surprise{display:block;width:100%;margin-top:6px;border:1px dashed rgba(147,197,253,.5);background:rgba(59,130,246,.1);color:var(--acc2);border-radius:14px;padding:10px;font:inherit;font-weight:800;cursor:pointer}
+.score{font-weight:800;color:#fde68a;font-size:.8rem}
+.ptsPop{display:inline-block;margin-top:8px;font-size:1.6rem;font-weight:900;color:#fde68a;text-shadow:0 0 18px rgba(251,191,36,.5);animation:boing .6s}
+/* hall of fame */
+.hofHead{display:flex;justify-content:space-between;align-items:center;margin:4px 0 12px}
+.hofHead h1{font-size:1.9rem;margin:0;text-align:left}
+.hrow{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line)}
+.hrow:last-child{border-bottom:none}
+.hrow .rk{width:30px;text-align:center;font-weight:900;font-size:1.1rem;color:var(--muted)}
+.hrow .nm{flex:1;min-width:0}.hrow .nm b{display:block}.hrow .nm span{font-size:.78rem;color:var(--muted)}
+.hrow .pt{font-weight:900;font-size:1.15rem;color:#fde68a}
+.hrow.new{background:rgba(251,191,36,.08);border-radius:12px}
+.newtag{font-size:.65rem;background:#fbbf24;color:#1e293b;border-radius:6px;padding:1px 5px;margin-left:6px;font-weight:900;vertical-align:middle}
+.lvsc{margin:8px 0 4px;text-align:left}
+.lvsc .hrow{padding:6px 2px}
+.lvgrid{width:100%;border-collapse:collapse;margin-top:10px;font-size:.88rem}
+.lvgrid th{color:var(--muted);font-weight:700;padding:5px 3px;text-align:right}
+.lvgrid th:first-child,.lvgrid td:first-child{text-align:left}
+.lvgrid td{padding:6px 3px;border-top:1px solid var(--line);text-align:right}
+.lvgrid td.tot{color:#fde68a;font-weight:900}
+.mixhint{font-size:.78rem;color:var(--acc2);margin-top:6px;min-height:1em}
+
+.sw{width:52px;height:30px;border-radius:99px;background:#475569;border:none;position:relative;cursor:pointer;flex:0 0 52px;transition:.2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#f8fafc;transition:left .2s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.sw.on{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.sw.on::after{left:25px}
+
+.add{display:flex;gap:6px;margin-top:4px}
+.add input,.add select{font:inherit;font-size:.95rem;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:rgba(15,23,42,.6);color:var(--text);min-width:0}
+.add input{flex:2}.add select{flex:1.2}
+.add input::placeholder{color:#64748b}
+
+.row{display:flex;gap:8px}
+.chip{flex:1;border:1px solid var(--line);background:rgba(15,23,42,.5);border-radius:16px;padding:12px 6px;font:inherit;font-size:1.15rem;font-weight:800;color:var(--text);cursor:pointer}
+.chip.on{background:linear-gradient(180deg,#60a5fa,#2563eb);border-color:transparent;box-shadow:0 6px 16px rgba(37,99,235,.45)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:1rem;font-weight:600;padding:7px 0}
+.toggle + .toggle{border-top:1px solid var(--line)}
+
+.big{display:block;width:100%;border:none;border-radius:20px;padding:17px;font:inherit;font-size:1.4rem;font-weight:900;letter-spacing:.5px;color:#fff;cursor:pointer;
+  background:linear-gradient(180deg,#60a5fa,#2563eb);box-shadow:0 10px 26px rgba(37,99,235,.45),inset 0 1px 0 rgba(255,255,255,.35);margin-top:10px;transition:transform .1s}
+.big:active{transform:scale(.97)}
+.big.alt{background:linear-gradient(180deg,#64748b,#334155);box-shadow:0 10px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2)}
+.small{border:1px solid var(--line);border-radius:14px;padding:9px 14px;font:inherit;font-weight:700;font-size:.95rem;color:var(--text);background:rgba(15,23,42,.55);cursor:pointer}
+.small.blue{background:linear-gradient(180deg,#60a5fa,#2563eb);border-color:transparent;color:#fff}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
+.lvl{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.pill{background:rgba(15,23,42,.6);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-weight:700;font-size:.85rem}
+.pill.l{background:linear-gradient(90deg,rgba(59,130,246,.35),rgba(14,165,233,.25));border-color:rgba(96,165,250,.5)}
+.iconbtn{border:1px solid var(--line);background:rgba(15,23,42,.6);color:var(--text);border-radius:12px;font-size:1.1rem;padding:6px 10px;cursor:pointer}
+.prog{height:6px;border-radius:9px;background:rgba(148,163,184,.2);overflow:hidden;margin:-2px 0 12px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#3b82f6,#93c5fd);transition:width .4s}
+
+/* scoreboard */
+.board{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;margin-bottom:10px}
+.mini{flex:1;min-width:78px;background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:8px 6px;text-align:center;font-size:.85rem;backdrop-filter:blur(10px);transition:.25s}
+.mini.turn{border-color:var(--acc);box-shadow:0 0 0 3px rgba(96,165,250,.2),0 8px 18px rgba(37,99,235,.3);transform:translateY(-2px)}
+.mini.out{opacity:.35;filter:grayscale(1)}
+.mini .e{font-size:1.4rem}
+.mini b{display:block;font-size:.95rem}
+.hearts{font-size:.8rem;letter-spacing:-1px;line-height:1.15;word-break:break-all}
+
+/* handoff */
+.handoff{text-align:center;padding:28px 16px}
+.bigEm{font-size:5.5rem;line-height:1;animation:wiggle 1.4s infinite;filter:drop-shadow(0 10px 20px rgba(0,0,0,.4))}
+@keyframes wiggle{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg) scale(1.06)}}
+.ping{color:var(--acc2);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.8rem;margin-top:10px}
+.who{font-size:2.6rem;font-weight:900;margin:2px 0;background:linear-gradient(90deg,#f8fafc,#93c5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+.msg{font-size:1.05rem;color:var(--muted)}
+.poolTag{display:inline-block;margin-top:10px;font-size:.85rem;color:var(--acc2);background:rgba(59,130,246,.15);border:1px solid rgba(96,165,250,.35);border-radius:999px;padding:4px 12px}
+
+/* question */
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.qwho{font-weight:800;font-size:1.15rem}
+.timer{font-weight:900;font-size:1.25rem;background:rgba(15,23,42,.7);border:1px solid var(--line);border-radius:999px;padding:3px 14px;min-width:64px;text-align:center}
+.timer.hurry{background:var(--bad);border-color:transparent;animation:pulse .5s infinite alternate}
+@keyframes pulse{to{transform:scale(1.12)}}
+.bar{height:8px;background:rgba(148,163,184,.2);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#60a5fa,#93c5fd);width:100%;transition:width 1s linear}
+.golden{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.1));border:1px solid rgba(251,191,36,.6);text-align:center;font-weight:800;border-radius:14px;padding:7px;margin-bottom:12px;color:#fde68a;animation:shine 1s infinite alternate}
+@keyframes shine{to{box-shadow:0 0 22px rgba(251,191,36,.45)}}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.cat{display:inline-block;background:rgba(59,130,246,.18);color:var(--acc2);border:1px solid rgba(96,165,250,.3);border-radius:99px;padding:3px 12px;font-weight:700;font-size:.82rem}
+.cat.d1{color:#86efac;border-color:rgba(134,239,172,.35);background:rgba(34,197,94,.12)}
+.cat.d2{color:#fde68a;border-color:rgba(253,230,138,.35);background:rgba(251,191,36,.12)}
+.cat.d3{color:#fda4af;border-color:rgba(253,164,175,.35);background:rgba(244,63,94,.12)}
+.qtext{font-size:1.5rem;font-weight:800;line-height:1.28;margin:12px 0 16px}
+.qtext.kid{font-size:1.8rem}
+.opts{display:grid;gap:10px}
+.opt{border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:14px 12px;font:inherit;font-size:1.25rem;font-weight:800;text-align:left;cursor:pointer;color:#fff;display:flex;gap:12px;align-items:center;
+  box-shadow:0 8px 18px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.2);transition:transform .1s}
+.opt:active{transform:scale(.97)}
+.opt .k{background:rgba(255,255,255,.18);border-radius:10px;width:34px;height:34px;display:grid;place-items:center;flex:0 0 34px;font-size:1rem}
+.o0{background:linear-gradient(180deg,#3b82f6,#1d4ed8)}
+.o1{background:linear-gradient(180deg,#6366f1,#4338ca)}
+.o2{background:linear-gradient(180deg,#0ea5e9,#0369a1)}
+.o3{background:linear-gradient(180deg,#64748b,#334155)}
+.kidopts .opt{font-size:1.55rem;padding:18px 14px}
+.opt.right{background:linear-gradient(180deg,#22c55e,#15803d)!important;animation:bounce .5s;box-shadow:0 0 24px rgba(34,197,94,.55)}
+.opt.wrong{background:linear-gradient(180deg,#f43f5e,#be123c)!important;animation:shake .4s}
+.opt.dim{opacity:.3}
+@keyframes bounce{40%{transform:scale(1.06)}}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.speak{margin-top:14px;display:flex;justify-content:center}
+
+/* result */
+.result{text-align:center}
+.face{font-size:5rem;line-height:1;margin-top:6px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.4))}
+.verdict{font-size:2.1rem;font-weight:900;margin:6px 0}
+.ans{font-size:1.05rem;background:rgba(15,23,42,.55);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0;color:var(--muted)}
+.ans b{color:var(--text);font-size:1.2rem}
+.lifeMsg{font-size:1.1rem;font-weight:700}
+.out-banner{background:rgba(244,63,94,.15);border:1px solid rgba(244,63,94,.5);color:#fecdd3;border-radius:14px;padding:9px;font-weight:800;margin-top:10px}
+
+/* overlay */
+.overlay{position:fixed;inset:0;z-index:40;display:none;place-items:center;background:rgba(2,6,23,.75);backdrop-filter:blur(6px);padding:20px}
+.overlay.on{display:grid;animation:pop .4s}
+.lvlbox{text-align:center;max-width:380px;width:100%;max-height:92vh;overflow-y:auto}
+.lvlbox .zap{font-size:5rem;animation:wiggle 1s infinite}
+.lvlbox .lv{font-size:3rem;font-weight:900;background:linear-gradient(90deg,#fde68a,#93c5fd);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+.lvlbox ul{list-style:none;padding:0;margin:12px 0;text-align:left}
+.lvlbox li{background:rgba(15,23,42,.6);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;font-weight:600}
+
+/* winner */
+.win{text-align:center}
+.trophy{font-size:6rem;line-height:1;animation:wiggle 1.4s infinite;filter:drop-shadow(0 0 30px rgba(251,191,36,.5))}
+.wname{font-size:2.5rem;font-weight:900;background:linear-gradient(90deg,#fde68a,#f8fafc,#93c5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+table.sc{width:100%;border-collapse:collapse;margin-top:12px;font-size:1rem}
+table.sc td{padding:9px 4px;border-bottom:1px solid var(--line);text-align:left}
+table.sc td:last-child{text-align:right;color:var(--muted)}
+.how{font-size:.95rem;line-height:1.5;color:#cbd5e1}
+.how li{margin-bottom:5px}
+.confetti{position:fixed;top:-24px;font-size:1.6rem;pointer-events:none;z-index:50;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
+<div class="wrap">
+
+<!-- SETUP -->
+<section id="setup" class="screen on">
+  <div class="table"><div class="surface"></div><div class="net"></div><div class="ball"></div></div>
+  <h1>Pink Ponk Knowledge</h1>
+  <p class="sub">The quiz battle for everyone 🏓</p>
+
+  <div class="card">
+    <h2>👥 Who's playing? <small>tap the switch</small></h2>
+    <div id="playerList"></div>
+    <div id="emptyMsg" class="empty">No players yet. Add your first player below 👇</div>
+    <div class="creator">
+      <div class="ctitle">🎨 Character Creator</div>
+      <div class="stage">
+        <div class="spot"></div>
+        <div id="pvAva"></div>
+        <div class="pvname" id="pvName">Your hero</div>
+        <div class="pvtag" id="pvTag">Pick a school year ↓</div>
+      </div>
+      <button class="surprise" id="surpriseBtn">🎲 Surprise me!</button>
+      <div class="lbl">1 · BUILD YOUR FACE <span style="text-transform:none;letter-spacing:0">(tap a tab, then a style)</span></div>
+      <div class="tabs partTabs" id="partTabs"></div>
+      <div class="fopts" id="partOpts"></div>
+      <div class="lbl">2 · NAME <span style="text-transform:none;letter-spacing:0">(🎲 for a silly one)</span></div>
+      <div class="namerow"><input id="newName" class="nameIn" placeholder="Type a name…" maxlength="14"><button class="dice" id="nameDice">🎲</button></div>
+      <div class="lbl">3 · SCHOOL YEAR OR GROWN-UP</div>
+      <div class="yrs" id="newYears"></div>
+      <button class="big" id="addBtn" style="font-size:1.15rem;padding:13px">✨ Create player</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>💙 How many lives?</h2>
+    <div class="row" id="livesRow">
+      <button class="chip" data-l="3">3</button>
+      <button class="chip on" data-l="5">5</button>
+      <button class="chip" data-l="10">10</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ Options</h2>
+    <div class="toggle">⏱️ Countdown timer <button class="sw on" id="swTimer" aria-label="timer"></button></div>
+    <div class="toggle">⚡ Level up every 30 questions <button class="sw on" id="swLevel" aria-label="levels"></button></div>
+    <div class="toggle">🔊 Read questions aloud (Reception – Year 2) <button class="sw on" id="swRead" aria-label="read aloud"></button></div>
+    <div class="toggle">🎵 Sounds <button class="sw on" id="swSound" aria-label="sounds"></button></div>
+  </div>
+
+  <button class="big" id="startBtn">🏓 PLAY</button>
+  <button class="big alt" id="hofBtn">🏆 Hall of Fame</button>
+
+  <div class="card how" style="margin-top:16px">
+    <h2>📖 How to play</h2>
+    <ul style="padding-left:20px;margin:0">
+      <li>Pass the phone 📱. Everyone gets questions at their own level.</li>
+      <li>Build each player's face in the Character Creator: colour, eyes, nose, mouth, teeth, glasses and hats. Then add a name and school year.</li>
+      <li>Kids can mix year groups. Tap more years on their card (e.g. Year 4 + Year 5).</li>
+      <li>Wrong answer or time runs out = lose a 💙</li>
+      <li>⭐ <b>Golden Ball</b>: answer right to win a life back!</li>
+      <li>⚡ <b>Every 30 questions = Level Up</b>: questions get harder and the timer drops by 2 seconds (never below 5).</li>
+      <li>⭐ <b>Points</b>: right answers score more when you're fast, on a streak or on a higher level.</li>
+      <li>📊 Every level has its own scoreboard. See the <b>Hall of Fame</b>.</li>
+      <li>Last player standing is the <b>Pink Ponk Champion</b> 🏆</li>
+    </ul>
+  </div>
+</section>
+
+<!-- HANDOFF -->
+<section id="handoff" class="screen">
+  <div class="top">
+    <div class="lvl"><span class="pill l" id="lvlPill">⚡ Level 1</span><span class="pill" id="qPill">Q 1</span></div>
+    <span style="display:flex;gap:6px;flex:0 0 auto"><button class="iconbtn" id="muteBtn">🔊</button> <button class="iconbtn" id="quitBtn">🏠</button></span>
+  </div>
+  <div class="prog"><i id="prog"></i></div>
+  <div class="board" id="board1"></div>
+  <div class="card handoff">
+    <div id="hoEm" style="display:flex;justify-content:center"></div>
+    <div class="ping">Ping · Pong · Ponk</div>
+    <div class="who" id="hoName">Max</div>
+    <div class="msg" id="hoMsg">it's your turn!</div>
+    <div class="poolTag" id="hoPool"></div>
+    <button class="big" id="readyBtn">I'm ready 💪</button>
+  </div>
+</section>
+
+<!-- QUESTION -->
+<section id="question" class="screen">
+  <div class="board" id="board2"></div>
+  <div class="card">
+    <div class="qhead"><span class="qwho" id="qWho"></span><span class="timer" id="timer">20</span></div>
+    <div class="bar" id="barWrap"><i id="bar"></i></div>
+    <div class="golden" id="golden" style="display:none">⭐ GOLDEN BALL · win a 💙</div>
+    <div class="tags"><span class="cat" id="qCat"></span><span class="cat" id="qYear"></span><span class="cat" id="qDiff"></span></div>
+    <div class="qtext" id="qText"></div>
+    <div class="opts" id="opts"></div>
+    <div class="speak"><button class="small" id="speakBtn">🔊 Read it to me</button></div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="screen">
+  <div class="board" id="board3"></div>
+  <div class="card result">
+    <div class="face" id="rFace"></div>
+    <div class="verdict" id="rVerdict"></div>
+    <div class="ans" id="rAns"></div>
+    <div id="rPts"></div>
+    <div class="lifeMsg" id="rLife"></div>
+    <div id="rOut"></div>
+    <button class="big" id="nextBtn">Next player ➡️</button>
+  </div>
+</section>
+
+<!-- WINNER -->
+<section id="winner" class="screen">
+  <div class="card win">
+    <div class="trophy" style="font-size:3.4rem">🏆</div>
+    <div id="wAva" style="display:flex;justify-content:center;margin:14px 0 6px"></div>
+    <div style="color:var(--muted);font-weight:600;letter-spacing:2px;text-transform:uppercase;font-size:.85rem;margin-top:6px">Pink Ponk Champion</div>
+    <div class="wname" id="wName"></div>
+    <div id="wSub" style="color:var(--muted)"></div>
+    <table class="sc" id="scoreTable"></table>
+    <table class="lvgrid" id="lvGrid"></table>
+    <button class="big" id="againBtn">🔁 Play again</button>
+    <button class="big alt" id="hofBtn2">🏆 Hall of Fame</button>
+    <button class="big alt" id="homeBtn">🏠 Change players</button>
+  </div>
+</section>
+
+<!-- HALL OF FAME -->
+<section id="hof" class="screen">
+  <div class="hofHead"><h1>🏆 Hall of Fame</h1><button class="iconbtn" id="hofBack">⬅️</button></div>
+  <div class="tabs" id="hofTabs"></div>
+  <div class="card" id="hofList"></div>
+  <button class="small" id="hofReset">🗑️ Clear all scores</button>
+</section>
+</div>
+
+<!-- LEVEL UP -->
+<div class="overlay" id="lvlUp">
+  <div class="card lvlbox">
+    <div class="zap">⚡</div>
+    <p class="lv" id="lvlUpTxt">LEVEL 2</p>
+    <div class="lvsc" id="lvlScores"></div>
+    <ul id="lvlUpList"></ul>
+    <button class="big" id="lvlGo">Bring it on! 🔥</button>
+  </div>
+</div>
+
+<script type="text/plain" id="qbank">#rec
+1|S|What sound does a cow make? 🐄|Moo|Woof|Quack
+1|S|What sound does a dog make? 🐶|Woof|Moo|Baa
+1|S|What sound does a duck make? 🦆|Quack|Oink|Neigh
+1|S|What sound does a pig make? 🐷|Oink|Meow|Moo
+1|S|What sound does a sheep make? 🐑|Baa|Woof|Hiss
+1|F|What colour is a banana? 🍌|Yellow|Blue|Purple
+1|F|What colour is grass? 🌿|Green|Red|Pink
+1|F|What colour is the sky on a sunny day?|Blue|Green|Brown
+1|F|What colour is a strawberry? 🍓|Red|Blue|Grey
+1|F|What colour is snow? ❄️|White|Black|Orange
+1|M|Which shape is round?|Circle ⚪|Square 🟦|Triangle 🔺
+1|S|Which animal says "meow"?|Cat|Dog|Horse
+1|S|Which animal can fly?|Bird 🐦|Cow 🐄|Fish 🐟
+1|E|What letter does "apple" start with? 🍎|a|b|m
+1|E|What letter does "ball" start with? ⚽|b|d|s
+1|E|What letter does "sun" start with? ☀️|s|c|t
+1|F|How many eyes do you have? 👀|2|3|5
+1|F|How many noses do you have? 👃|1|2|4
+1|S|What do we use to hear?|Ears 👂|Eyes 👀|Feet 🦶
+1|S|What do we use to see?|Eyes 👀|Ears 👂|Hands ✋
+1|F|Which one is a fruit?|Apple 🍎|Car 🚗|Sock 🧦
+2|S|Which animal has a long trunk?|Elephant 🐘|Mouse 🐭|Cat 🐱
+2|S|Which animal hops?|Rabbit 🐰|Snake 🐍|Fish 🐟
+2|S|Which animal has a very long neck?|Giraffe 🦒|Pig 🐷|Duck 🦆
+2|S|What do cows give us?|Milk 🥛|Eggs 🥚|Wool 🧶
+2|S|What do hens lay? 🐔|Eggs 🥚|Milk 🥛|Apples 🍎
+2|F|What do you wear on your feet?|Shoes 👟|Hat 🎩|Gloves 🧤
+2|F|What do you wear on your head when it's cold?|Hat 🧢|Socks 🧦|Shorts 🩳
+2|E|Which word rhymes with "bed"?|red|pin|cup
+2|E|Which word rhymes with "pig"?|wig|cat|log
+2|F|What is the opposite of big?|Small|Tall|Wet
+2|F|What is the opposite of day?|Night|Morning|Lunch
+2|M|How many sides does a square have? 🟦|4|3|5
+2|F|What shines in the sky at night?|The Moon 🌙|A rainbow 🌈|A kite 🪁
+2|F|What do you use to brush your teeth?|Toothbrush 🪥|Spoon 🥄|Comb
+2|F|Which one is a vehicle?|Bus 🚌|Tree 🌳|Cake 🎂
+3|S|What is a baby dog called?|Puppy|Kitten|Chick
+3|S|What is a baby cat called?|Kitten|Puppy|Calf
+3|S|What is a baby duck called?|Duckling|Piglet|Lamb
+3|S|What do caterpillars eat? 🐛|Leaves 🍃|Fish 🐟|Bread 🍞
+3|F|What colour do you get mixing red and yellow?|Orange 🟠|Green 🟢|Blue 🔵
+3|F|How many days are in a week?|7|3|10
+3|F|What day comes after Monday?|Tuesday|Sunday|Friday
+3|S|What falls from clouds when it rains? 🌧️|Water|Sand|Leaves
+3|F|What is frozen water called?|Ice 🧊|Steam|Juice
+3|S|Which season is hot and sunny?|Summer ☀️|Winter ❄️|Autumn 🍂
+3|F|How many wheels does a bike have? 🚲|2|3|4
+3|F|How many legs does a dog have? 🐕|4|2|6
+3|F|Which animal is called the King of the Jungle?|Lion 🦁|Mouse 🐭|Owl 🦉
+#y1
+1|E|Which word rhymes with "hop"?|top|hip|hat
+1|E|Which word rhymes with "light"?|night|lot|lamp
+1|E|What letter does "zebra" 🦓 start with?|z|s|x
+1|E|Which is a capital letter?|A|a|b
+1|E|What goes at the end of a telling sentence?|Full stop .|Comma ,|Question mark ?
+1|S|Which part of a plant grows under the ground?|Roots|Petals|Leaves
+1|S|Animals that eat only meat are called…|Carnivores|Herbivores|Vegetables
+1|S|Which of these is a fish?|Goldfish|Dolphin|Penguin
+1|S|What do you smell with?|Nose 👃|Elbow|Knee
+1|S|What do you taste with?|Tongue 👅|Ear|Toe
+1|F|How many months are in a year?|12|10|7
+1|F|Which day comes after Friday?|Saturday|Thursday|Monday
+1|F|What is the first month of the year?|January|March|December
+1|S|Which season comes after winter?|Spring 🌷|Summer|Autumn
+1|S|A teddy bear is usually made of…|Fabric|Metal|Glass
+1|S|A spoon is often made of…|Metal|Paper|Wool
+2|E|Which word means more than one?|dogs|dog|doggy
+2|E|"un" + "kind" makes…|unkind|kindun|unkinded
+2|E|Which word joins ideas? "I like cake ___ ice cream."|and|dog|run
+2|E|Which word is spelled correctly?|the|teh|hte
+2|E|Which word is spelled correctly?|was|woz|wos
+2|E|Which word is spelled correctly?|you|yoo|yuo
+2|S|Which animal is a bird?|Penguin 🐧|Bat 🦇|Frog 🐸
+2|S|Which animal is an amphibian?|Frog 🐸|Lizard 🦎|Shark 🦈
+2|S|Which animal is a reptile?|Snake 🐍|Frog 🐸|Whale 🐳
+2|S|A tree that loses its leaves in autumn is…|Deciduous|Evergreen|Plastic
+2|S|Which material is waterproof?|Plastic|Paper|Cotton
+2|S|Which material is bendy?|Rubber|Stone|Glass
+2|G|Which of these is a country in the UK?|Wales|France|Spain
+2|G|Which place is very hot and dry?|A desert 🏜️|The Arctic|A pond
+3|H|Who flew the first aeroplane? ✈️|The Wright brothers|The Grimm brothers|The Smith brothers
+3|H|Before electricity, people lit their homes with…|Candles 🕯️|Lightbulbs|Phones
+3|G|What is a map?|A drawing of a place|A type of food|A song
+3|G|Where does the Sun rise?|In the east|In the west|In the north
+3|S|The colourful part of a flower is the…|Petals|Roots|Stem
+3|E|What is the opposite of "full"?|empty|heavy|tall
+3|E|Which word means the same as "happy"?|glad|sad|cross
+3|F|How many hours are in a day?|24|12|60
+3|S|What is a baby horse called? 🐴|Foal|Calf|Cub
+3|S|Which animal is awake at night (nocturnal)?|Owl 🦉|Cow 🐄|Butterfly 🦋
+3|S|Which animal is a mammal?|Dog|Snake|Shark
+#y2
+1|M|5 + 4 = ?|9|8|10
+1|M|10 − 3 = ?|7|6|8
+1|M|2 + 2 + 2 = ?|6|4|8
+1|M|Count the apples: 🍎🍎🍎🍎🍎🍎🍎|7|6|8
+1|M|🐶🐶🐶 + 🐶🐶 = how many dogs?|5|4|6
+1|M|How many sides does a triangle have? 🔺|3|4|5
+1|M|Which 3D shape is like a football? ⚽|Sphere|Cube|Cone
+1|M|Which 3D shape is like a dice? 🎲|Cube|Sphere|Cylinder
+1|M|How many days are in a week?|7|5|10
+1|M|Which month comes after March?|April|May|February
+1|E|Which word rhymes with CAT? 🐱|hat|cup|dog
+1|E|Which word rhymes with SUN? ☀️|fun|sit|sand
+1|E|What is the opposite of HOT? 🔥|cold|warm|big
+1|E|What is the opposite of UP? ⬆️|down|over|in
+1|E|What letter does 'elephant' 🐘 start with?|e|l|a
+1|S|What is a baby frog called? 🐸|Tadpole|Kitten|Cub
+1|S|What is a baby cow called? 🐄|Calf|Lamb|Foal
+1|S|What is a baby sheep called? 🐑|Lamb|Puppy|Chick
+1|S|Which animal has feathers?|Bird|Fish|Cat
+1|S|Where does a fish live? 🐟|In water|In a tree|In the desert
+1|S|What do bees make? 🐝|Honey|Milk|Jam
+1|S|Which sense do you use your nose for? 👃|Smell|Taste|Hearing
+1|S|Which is the healthiest snack?|Apple 🍏|Crisps|Sweets
+1|S|Which is the hottest? 🔥|The Sun|The Moon|A snowman
+1|S|What colour do you get mixing red and white?|Pink|Brown|Grey
+2|M|What comes next? 2, 4, 6, 8, …|10|9|12
+2|M|What comes next? 5, 10, 15, …|20|16|25
+2|M|What comes next? 10, 20, 30, …|40|31|50
+2|M|How many tens are in 40?|4|40|10
+2|M|Which number is the BIGGEST?|71|17|67
+2|M|Which shape has 6 sides?|Hexagon|Pentagon|Circle
+2|M|How many minutes are in one hour?|60|100|30
+2|M|Which number is odd?|7|4|10
+2|M|Which number is even?|8|5|3
+2|E|Which is a naming word (noun)?|dog|run|happy
+2|E|Which is a doing word (verb)?|jump|blue|table
+2|E|Which is spelled correctly?|because|becos|becuz
+2|E|Which is spelled correctly?|friend|freind|frend
+2|E|Which is spelled correctly?|said|sed|sayd
+2|E|What goes at the end of a question?|?|.|,
+2|E|Which letter is a vowel?|e|b|t
+2|E|More than one fox is…|foxes|foxs|foxies
+2|E|How many letters are in the alphabet?|26|24|20
+2|E|Which word has the suffix "-ful"?|helpful|helping|unhelp
+2|E|Which one is a question?|What time is it?|I like cake.|Go away!
+2|S|What do plants need to grow? 🌱|Water and light|Sweets|Darkness
+2|S|Which material can you see through?|Glass|Wood|Brick
+2|S|What does a caterpillar turn into? 🐛|Butterfly|Spider|Frog
+2|S|How many legs does a spider have? 🕷️|8|6|4
+2|S|Which season is the coldest? ❄️|Winter|Summer|Spring
+2|S|In which season do leaves fall off trees? 🍂|Autumn|Spring|Summer
+2|S|What colour do you get mixing blue and yellow?|Green|Purple|Orange
+2|S|Animals that eat plants AND meat are…|Omnivores|Herbivores|Carnivores
+2|S|Which of these is living?|Tree 🌳|Rock 🪨|Chair 🪑
+2|G|What is the capital city of England?|London|Paris|Cardiff
+2|G|Which continent is the coldest?|Antarctica|Africa|Australia
+3|M|What is 1 more than 49?|50|48|59
+3|M|What is 10 less than 63?|53|62|73
+3|M|At half past 3, the long hand points to…|6|12|3
+3|M|How many pence make £1?|100p|10p|50p
+3|M|20p + 20p + 10p = ?|50p|40p|30p
+3|M|How many faces does a cube have?|6|4|8
+3|M|3 tens and 4 ones make…|34|43|7
+3|M|What time is quarter past 2?|2:15|2:45|3:15
+3|E|What does 'unhappy' mean?|not happy|very happy|happy again
+3|E|Which word needs a capital letter?|London|dog|park
+3|E|Which is a bossy (command) sentence?|Shut the door.|The door is shut.|Is the door shut?
+3|E|Which word is a describing word (adjective)?|fluffy|jump|cat
+3|S|How many legs does an insect have? 🐞|6|8|4
+3|S|What is the biggest animal ever? 🐋|Blue whale|Elephant|Giraffe
+3|S|A food chain always starts with a…|Plant 🌿|Lion 🦁|Fish 🐟
+3|S|Which one is a habitat?|Woodland|Sandwich|Pencil
+3|H|The Great Fire of London started in a…|Bakery|Castle|School
+3|H|In what year was the Great Fire of London?|1666|1066|2000
+3|H|Who was the first person to walk on the Moon? 🌙|Neil Armstrong|Florence Nightingale|Christopher Columbus
+3|H|Florence Nightingale was a famous…|Nurse|Pilot|King
+3|H|Which queen reigned for 70 years?|Queen Elizabeth II|Queen Victoria|Queen Anne
+3|G|How many continents are there?|7|3|12
+3|G|Which one is an ocean? 🌊|Atlantic|Thames|Everest
+3|G|Which ocean is the biggest?|Pacific|Atlantic|Indian
+#y3
+1|E|Which word is a noun?|table|quickly|run|pretty
+1|E|What is the past tense of "run"?|ran|runned|running|runs
+1|E|What is the past tense of "go"?|went|goed|gone|going
+1|E|Which word needs "an" instead of "a"?|apple|banana|car|dog
+1|S|What do magnets attract?|Iron|Plastic|Wood|Glass
+1|S|Which part of a plant takes in water?|Roots|Flower|Petals|Seeds
+1|S|When an object blocks light, it makes a…|Shadow|Mirror|Rainbow|Reflection
+1|H|Stone Age people made tools from…|Flint|Plastic|Steel|Glass
+1|G|Which one is a continent?|Europe|France|London|Thames
+1|G|What is the capital of France? 🇫🇷|Paris|Rome|Madrid|Berlin
+1|M|How many centimetres are in a metre?|100|10|1,000|50
+1|M|What shape is a stop sign? 🛑|Octagon|Hexagon|Circle|Square
+1|A|How many colours are in a rainbow? 🌈|7|5|6|9
+2|E|Which word has a prefix?|disagree|agreeing|agreement|agreed
+2|E|Which word means the same as "small"?|little|huge|wide|tall
+2|E|More than one mouse is…|mice|mouses|meese|mousies
+2|E|Which word is spelled correctly?|knife|nife|kniff|nyfe
+2|S|Plants use which of these to make food?|Sunlight|Moonlight|Darkness|Sand
+2|S|What is your skeleton made of?|Bones|Muscles|Skin|Blood
+2|S|What protects your brain?|Skull|Ribs|Spine|Pelvis
+2|S|What do your ribs protect?|Heart and lungs|Brain|Stomach|Feet
+2|S|Rock made from cooled lava is…|Igneous|Sedimentary|Metamorphic|Chalk
+2|S|Fossils are usually found in which rock?|Sedimentary|Igneous|Metamorphic|Granite
+2|H|Which famous stone circle is in Wiltshire?|Stonehenge|Hadrian's Wall|Big Ben|Stone Tower
+2|H|The Bronze Age came after the…|Stone Age|Iron Age|Roman times|Victorian era
+2|G|A mountain that can erupt is a…|Volcano 🌋|Valley|Hill|Glacier
+2|G|Which country is shaped like a boot?|Italy|Spain|Greece|Norway
+2|G|What is the capital of Spain?|Madrid|Barcelona|Lisbon|Seville
+2|M|A right angle is a…|Quarter turn|Half turn|Full turn|No turn
+2|M|How many sides does a hexagon have?|6|5|7|8
+2|F|Which planet do we live on? 🌍|Earth|Mars|Jupiter|Venus
+2|F|Which planet is called the Red Planet?|Mars|Venus|Saturn|Neptune
+3|E|Which is a subordinating conjunction?|when|and|but|or
+3|E|Words like "bang" and "sizzle" are examples of…|Onomatopoeia|Alliteration|Simile|Rhyme
+3|S|The two ends of a magnet are called…|Poles|Points|Tips|Sides
+3|S|Two north poles of magnets will…|Repel (push apart)|Attract|Melt|Stick together
+3|S|Which is a source of light?|The Sun|The Moon|A mirror|A window
+3|S|Pollination is often done by…|Bees 🐝|Worms|Fish|Cats
+3|H|Skara Brae is a Stone Age village in…|Scotland|Wales|Cornwall|Ireland
+3|H|Ancient Egyptians wrote with pictures called…|Hieroglyphics|Runes|Emojis|Letters
+3|H|Egyptians preserved bodies as…|Mummies|Statues|Fossils|Skeletons
+3|G|What is the largest country in the world?|Russia|China|USA|Canada
+3|G|The North and South Poles are covered in…|Ice|Sand|Forest|Grass
+3|M|What is the next even number after 98?|100|99|102|101
+3|M|How many minutes are in half an hour?|30|50|15|60
+3|M|How many grams are in a kilogram?|1,000|100|10|500
+3|F|Which planet has big rings? 🪐|Saturn|Mercury|Mars|Earth
+#y4
+1|M|7 × 8 = ?|56|54|48|64
+1|M|6 × 7 = ?|42|36|48|49
+1|M|9 × 6 = ?|54|56|45|63
+1|M|7 × 7 = ?|49|42|56|47
+1|M|4 × 25 = ?|100|75|125|90
+1|M|1,000 − 1 = ?|999|900|1,001|990
+1|M|Round 47 to the nearest 10|50|40|45|100
+1|M|What is ¼ of 20?|5|4|10|8
+1|M|How many sides does a pentagon have?|5|6|8|4
+1|M|How many mm are in 1 cm?|10|100|1,000|5
+1|M|How many metres are in 1 km?|1,000|100|10|10,000
+1|E|More than one child is…|children|childs|childes|childrens
+1|E|Which word is an adverb?|quickly|quick|quicken|quickest
+1|E|A word that means the same as BIG is…|huge|tiny|short|thin
+1|E|What word class is 'beautiful'?|Adjective|Verb|Noun|Adverb
+1|S|Water turned into ice is a…|Solid|Liquid|Gas|Vapour
+1|S|At what temperature does water freeze?|0 °C|10 °C|−10 °C|100 °C
+1|S|Sounds are made by…|Vibrations|Light|Magnets|Shadows
+1|S|Where does digestion start?|Mouth|Stomach|Heart|Lungs
+1|S|An animal that eats only plants is a…|Herbivore|Carnivore|Omnivore|Predator
+1|S|What is the closest star to Earth? ⭐|The Sun|The Moon|The North Star|Mars
+1|H|Where did the Vikings come from? ⛵|Scandinavia|Italy|Egypt|Spain
+1|H|Ancient Egyptian kings were called…|Pharaohs|Emperors|Sultans|Chiefs
+1|G|What is the capital of Scotland?|Edinburgh|Glasgow|Aberdeen|Dundee
+1|G|What is the capital of Wales?|Cardiff|Swansea|Newport|Bangor
+1|G|What is the largest ocean? 🌊|Pacific|Atlantic|Indian|Arctic
+1|G|Egypt is in which continent?|Africa|Asia|Europe|South America
+2|M|12 × 11 = ?|132|121|122|144
+2|M|8 × 12 = ?|96|88|84|108
+2|M|63 ÷ 7 = ?|9|8|7|6
+2|M|72 ÷ 8 = ?|9|8|7|6
+2|M|345 + 230 = ?|575|565|585|475
+2|M|700 − 250 = ?|450|550|500|350
+2|M|What is the value of the 6 in 3,642?|600|6|60|6,000
+2|M|What is ¾ of 12?|9|3|8|6
+2|M|Which fraction is equal to 2/4?|1/2|2/8|1/4|4/2
+2|M|1/5 + 2/5 = ?|3/5|3/10|2/5|1/5
+2|M|An angle smaller than a right angle is…|Acute|Obtuse|Reflex|Straight
+2|M|How many degrees are in a right angle?|90°|180°|45°|360°
+2|M|How many days are in a leap year?|366|365|364|360
+2|E|Which word is a preposition?|under|jump|happy|slowly
+2|E|One girl owns a bag. Which is correct?|the girl's bag|the girls bag|the girls' bag|the girl bag's
+2|E|Which is spelled correctly?|separate|seperate|seprate|separat
+2|E|Which word is a conjunction?|because|blue|quickly|under
+2|E|The opposite of ANCIENT is…|modern|old|antique|broken
+2|E|A group of fish is called a…|School|Herd|Flock|Pack
+2|E|Which word has the suffix "-ation"?|information|informing|informed|inform
+2|E|Which word is a possessive pronoun?|mine|me|I|myself
+2|S|At what temperature does water boil?|100 °C|50 °C|0 °C|200 °C
+2|S|When water evaporates it turns into a…|Gas|Solid|Metal|Rock
+2|S|Which material conducts electricity? ⚡|Copper|Plastic|Wood|Rubber
+2|S|Which teeth are best for biting and cutting?|Incisors|Molars|Canines|Wisdom teeth
+2|S|Animals with a backbone are called…|Vertebrates|Invertebrates|Insects|Molluscs
+2|S|How many planets are in our Solar System? 🪐|8|9|7|10
+2|S|A gas turning into a liquid is called…|Condensation|Evaporation|Melting|Freezing
+2|S|After the mouth, food goes down the…|Oesophagus|Lungs|Heart|Bladder
+2|H|Which wall did the Romans build in northern England?|Hadrian's Wall|The Great Wall|Offa's Dyke|The Berlin Wall
+2|H|Which queen led a revolt against the Romans?|Boudica|Victoria|Elizabeth|Anne
+2|H|What did the Romans call London?|Londinium|Romulus|Londonia|Lundenwic
+2|H|Roman soldiers were called…|Legionaries|Knights|Samurai|Vikings
+2|G|What is the highest mountain in the UK? ⛰️|Ben Nevis|Snowdon|Scafell Pike|Everest
+2|G|What is the capital of Northern Ireland?|Belfast|Derry|Dublin|Newry
+2|G|Which is the biggest continent?|Asia|Africa|Europe|Australia
+3|M|144 ÷ 12 = ?|12|11|14|10
+3|M|11 × 11 = ?|121|111|122|101
+3|M|Round 1,350 to the nearest 100|1,400|1,300|1,000|1,350
+3|M|0.5 is the same as…|½|⅕|¼|⅖
+3|M|1/10 written as a decimal is…|0.1|1.0|0.01|10
+3|M|What is 9 in Roman numerals? 🏛️|IX|XI|VIX|IIX
+3|M|What number is XIV?|14|16|11|15
+3|M|What does L mean in Roman numerals?|50|100|5|500
+3|M|What does C mean in Roman numerals?|100|50|1,000|10
+3|M|Perimeter of a square with 5 cm sides?|20 cm|25 cm|10 cm|15 cm
+3|M|Area of a rectangle 4 cm × 3 cm?|12 cm²|7 cm²|14 cm²|10 cm²
+3|M|3:15 pm on a 24-hour clock is…|15:15|03:15|13:15|12:15
+3|M|A polygon with 8 sides is an…|Octagon|Hexagon|Heptagon|Decagon
+3|M|What number is 2 less than 0?|−2|2|0|−1
+3|E|Which is spelled correctly?|island|iland|ieland|islend
+3|E|Which is spelled correctly?|believe|beleive|belive|beleave
+3|E|Which sentence starts with a fronted adverbial?|Later that day, we went swimming.|We went swimming.|Swimming is fun!|We swam later.
+3|E|What punctuation goes around speech?|Inverted commas|Brackets|Full stops|Hyphens
+3|E|Which prefix makes 'possible' mean NOT possible?|im|un|dis|re
+3|E|Which word sounds the same as "bear"?|bare|beer|bore|bar
+3|E|Which is an expanded noun phrase?|the fluffy grey cat|the cat|cat|a cat
+3|S|What does a switch do in a circuit?|Opens and closes it|Makes the battery|Stores light|Makes it heavier
+3|S|Which pointy teeth are for tearing?|Canines|Incisors|Molars|Milk teeth
+3|S|Which of these is an invertebrate?|Worm|Fish|Frog|Bird
+3|S|How loud a sound is, is called its…|Volume|Pitch|Speed|Echo
+3|S|A high squeaky sound has a high…|Pitch|Volume|Weight|Temperature
+3|S|In a food chain, an animal that hunts others is a…|Predator|Prey|Producer|Plant
+3|H|Which Roman emperor invaded Britain in AD 43?|Claudius|Julius Caesar|Nero|Augustus
+3|H|Which Anglo-Saxon king is called 'the Great'?|Alfred|Arthur|Harold|Henry
+3|H|Which Viking god carried a hammer?|Thor|Odin|Loki|Zeus
+3|H|Which Roman first tried to invade Britain in 55 BC?|Julius Caesar|Claudius|Nero|Hadrian
+3|G|What is the longest river in the UK?|River Severn|River Thames|River Trent|River Mersey
+3|G|The imaginary line around the middle of the Earth is the…|Equator|Prime Meridian|Arctic Circle|Tropic Line
+3|G|Melted rock that comes out of a volcano is… 🌋|Lava|Magma|Ash|Crust
+3|G|What is the capital of Ireland?|Dublin|Belfast|Cork|Galway
+#y5
+1|M|How many seconds are in an hour?|3,600|360|6,000|600
+1|M|What is 5² (5 squared)?|25|10|52|15
+1|M|A prime number can only be divided by…|1 and itself|2|10|Any odd number
+1|E|A simile compares things using…|'like' or 'as'|rhymes|questions|capital letters
+1|E|Which is a modal verb?|might|run|quickly|beautiful
+1|S|Which is the largest planet?|Jupiter|Saturn|Earth|Mars
+1|S|What force pulls things towards the Earth?|Gravity|Friction|Magnetism|Air resistance
+1|H|The Anglo-Saxons settled in Britain after the…|Romans left|Vikings left|Normans left|Tudors left
+1|G|What is the capital of Italy?|Rome|Milan|Venice|Naples
+1|G|What is the capital of Germany?|Berlin|Munich|Frankfurt|Hamburg
+2|M|Which of these is a prime number?|17|21|15|27
+2|M|0.25 as a fraction is…|1/4|2/5|1/25|1/2
+2|M|3/10 as a percentage is…|30%|3%|13%|0.3%
+2|M|How many degrees are on a straight line?|180°|90°|360°|100°
+2|E|A relative clause often starts with…|who / which|and / but|the / a|very
+2|E|Which sentence uses brackets correctly?|My dog (a poodle) is fluffy.|My (dog a poodle) is fluffy.|(My dog) a poodle is fluffy.|My dog a (poodle is) fluffy.
+2|E|Which word means 'not legal'?|illegal|unlegal|dislegal|inlegal
+2|S|What force slows a parachute down?|Air resistance|Gravity|Magnetism|Upthrust
+2|S|Salt mixed into water makes a…|Solution|Solid|Crystal|Metal
+2|S|How long does Earth take to orbit the Sun?|About 365 days|24 hours|28 days|10 years
+2|S|How long does Earth take to spin once?|24 hours|365 days|1 hour|7 days
+2|H|Which English king was killed at Hastings in 1066?|Harold II|Alfred|Edward I|Henry VIII
+2|H|The ancient Greeks started which famous sports event?|The Olympics|The World Cup|Wimbledon|The Tour de France
+2|H|Which Greek city was famous for its warriors?|Sparta|Athens|Corinth|Delphi
+2|G|The Prime Meridian passes through which part of London?|Greenwich|Camden|Soho|Wimbledon
+2|G|What is the longest river in Europe?|Volga|Danube|Rhine|Thames
+2|G|What is the capital of the USA?|Washington, D.C.|New York|Los Angeles|Chicago
+2|A|Who painted 'The Starry Night'?|Vincent van Gogh|Pablo Picasso|Claude Monet|Leonardo da Vinci
+3|M|What is 3³ (3 cubed)?|27|9|33|18
+3|M|Which is the largest?|0.7|0.65|0.07|0.699
+3|M|Angles in a full turn add up to…|360°|180°|270°|90°
+3|E|Giving human qualities to objects is called…|Personification|Alliteration|Rhyme|Exaggeration
+3|E|Which word is spelled correctly?|necessary|neccessary|necesary|nesessary
+3|E|Which word is spelled correctly?|rhythm|rythm|rhythym|rithm
+3|S|Inside a chrysalis, a butterfly is a…|Pupa|Larva|Egg|Adult
+3|S|Which change can NOT be reversed?|Burning wood|Melting ice|Freezing water|Dissolving sugar
+3|S|Which material is a good thermal insulator?|Wool|Copper|Iron|Aluminium
+3|H|Which Greek thinker taught Alexander the Great?|Aristotle|Plato|Socrates|Homer
+3|H|The Maya civilisation lived in…|Central America|Africa|Asia|Europe
+3|G|Lines of latitude run…|East to west|North to south|Diagonally|Up mountains
+3|G|Which mountain range is in South America?|Andes|Alps|Himalayas|Rockies
+3|G|Which line splits Earth into Northern and Southern halves?|Equator|Prime Meridian|Tropic of Cancer|Date line
+#y6
+1|M|What is 10% of 250?|25|2.5|250|50
+1|M|What is the mean of 2, 4 and 6?|4|6|12|3
+1|E|An antonym is a word with…|the opposite meaning|the same meaning|no vowels|a capital letter
+1|E|Which punctuation can join two related clauses?|Semi-colon ;|Apostrophe '|Question mark ?|Hyphen -
+1|S|What does the heart pump around the body?|Blood|Air|Food|Water
+1|S|Who came up with evolution by natural selection?|Charles Darwin|Isaac Newton|Albert Einstein|Marie Curie
+1|H|In which year did World War II begin?|1939|1914|1945|1918
+1|H|Who was the UK Prime Minister for most of WWII?|Winston Churchill|Neville Chamberlain|Clement Attlee|Margaret Thatcher
+1|G|What is the capital of Japan? 🇯🇵|Tokyo|Kyoto|Osaka|Beijing
+1|G|What is the longest river in Africa?|Nile|Congo|Niger|Zambezi
+2|M|What is 3 + 4 × 2?|11|14|10|24
+2|M|Area of a triangle: base 6 cm, height 4 cm?|12 cm²|24 cm²|10 cm²|20 cm²
+2|M|What is 2/3 of 18?|12|6|9|15
+2|M|Angles in a triangle add up to…|180°|360°|90°|270°
+2|E|Which sentence is in the passive voice?|The ball was kicked by Sam.|Sam kicked the ball.|Sam kicks the ball.|Sam will kick the ball.
+2|E|Which word means the same as "enormous"?|gigantic|minute|fragile|swift
+2|E|Why is there a hyphen in "man-eating shark"?|To avoid confusion|To show speech|To end a sentence|To show possession
+2|S|Light travels in…|Straight lines|Curves|Circles|Zigzags
+2|S|Which blood vessels carry blood away from the heart?|Arteries|Veins|Capillaries|Nerves
+2|S|Which of these are microscopic?|Bacteria|Mushrooms|Ferns|Snails
+2|S|Fossils give us evidence for…|Evolution|Gravity|Electricity|Magnetism
+2|H|Children sent to the countryside in WWII were…|Evacuees|Refugees|Soldiers|Spies
+2|H|The Battle of Britain was fought mainly in the…|Air|Sea|Desert|Jungle
+2|H|Which Tudor king had six wives?|Henry VIII|Henry VII|Edward VI|Richard III
+2|G|The Amazon rainforest is mostly in which country?|Brazil|Peru|Mexico|Argentina
+2|G|What is the capital of Egypt?|Cairo|Alexandria|Luxor|Giza
+2|G|What is the tallest mountain in the world?|Mount Everest|K2|Kilimanjaro|Ben Nevis
+3|M|If 2x = 14, what is x?|7|12|16|28
+3|M|Volume of a cube with 3 cm sides?|27 cm³|9 cm³|18 cm³|12 cm³
+3|M|0.6 as a fraction in simplest form?|3/5|6/100|1/6|2/3
+3|M|2 boys for every 3 girls. 10 children – how many girls?|6|4|5|3
+3|M|The diameter is 14 cm. What is the radius?|7 cm|28 cm|14 cm|3.5 cm
+3|E|Which sentence uses the subjunctive?|If I were you, I'd go.|If I was you, I'd go.|I am going.|I went there.
+3|E|Which word is spelled correctly?|accommodate|accomodate|acommodate|accommadate
+3|E|Which word is spelled correctly?|embarrass|embarass|embaras|imbarrass
+3|E|A colon is often used before…|a list or explanation|a question|every name|a full stop
+3|S|Which circuit symbol is a circle with a cross inside?|Bulb|Battery|Switch|Buzzer
+3|S|Adding more batteries makes a bulb…|Brighter|Dimmer|Turn off|Change colour
+3|S|Sorting living things into groups is called…|Classification|Evolution|Adaptation|Digestion
+3|S|Which gas do we breathe out that plants use?|Carbon dioxide|Oxygen|Helium|Hydrogen
+3|H|Who was the longest-reigning monarch before Elizabeth II?|Victoria|Anne|Mary I|Elizabeth I
+3|H|The Great Pyramid is at…|Giza|Rome|Athens|Babylon
+3|H|Germany's WWII code machine was called…|Enigma|Colossus|Bombe|Turing
+3|G|A line on a map joining places of equal height is a…|Contour line|Grid line|Border|Equator
+3|G|What is the largest hot desert?|Sahara|Gobi|Kalahari|Atacama
+3|G|In the water cycle, clouds form by…|Condensation|Evaporation|Precipitation|Collection
+#ks3
+1|M|What is −3 + 7?|4|−4|10|−10
+1|M|What is the square root of 81?|9|8|7|81
+1|M|What is 2⁵?|32|10|25|16
+1|E|A metaphor says something…|IS something else|is 'like' something|is very loud|rhymes
+1|E|"The wind whispered" is an example of…|Personification|Simile|Onomatopoeia|Hyperbole
+1|S|What is the chemical symbol for oxygen?|O|Ox|Om|Oy
+1|S|What is the 'powerhouse' of the cell?|Mitochondria|Nucleus|Ribosome|Cell wall
+1|S|Which organ controls the body?|Brain|Liver|Kidney|Lung
+1|H|In which year did William the Conqueror invade England?|1066|1166|1215|966
+1|H|Which ship sank in 1912 after hitting an iceberg?|Titanic|Lusitania|Mary Rose|Bismarck
+1|G|What is the capital of Russia?|Moscow|St Petersburg|Kyiv|Minsk
+2|M|Solve: x + 9 = 15|6|24|9|−6
+2|M|Interior angles of a quadrilateral add up to…|360°|180°|540°|720°
+2|M|0.035 as a percentage is…|3.5%|35%|0.35%|350%
+2|M|What is the next prime number after 13?|17|15|19|14
+2|E|Who wrote 'Oliver Twist'?|Charles Dickens|Jane Austen|Roald Dahl|J.K. Rowling
+2|E|How many lines does a sonnet have?|14|10|12|3
+2|E|Which is an example of alliteration?|Six slippery snakes|The sun smiled|As cold as ice|Bang! Crash!
+2|S|What is H₂O?|Water|Hydrogen gas|Salt|Oxygen
+2|S|Plants make food by…|Photosynthesis|Respiration|Digestion|Evaporation
+2|S|What is the pH of pure water?|7|0|14|1
+2|S|Which particle has a negative charge?|Electron|Proton|Neutron|Nucleus
+2|H|What was the Magna Carta?|A charter limiting the king's power|A ship|A castle|A Roman law
+2|H|The Black Death was mainly spread by…|Fleas on rats|Bad water|Bird song|Cold weather
+2|H|York and Lancaster fought in the…|Wars of the Roses|Hundred Years' War|Crimean War|Crusades
+2|G|Which African country has the most people?|Nigeria|Egypt|South Africa|Kenya
+2|G|What are the Himalayas?|A mountain range|A desert|A river|A sea
+2|A|Who painted the Sistine Chapel ceiling?|Michelangelo|Leonardo da Vinci|Raphael|Donatello
+3|M|Area of a circle with radius 10 (π ≈ 3.14)?|314|31.4|62.8|100
+3|M|Simplify 12/18|2/3|3/4|1/2|4/3
+3|M|What is 5 × −6?|−30|30|−11|11
+3|M|What is the gradient of y = 3x + 2?|3|2|5|1
+3|E|Who wrote 'Of Mice and Men'?|John Steinbeck|Ernest Hemingway|Mark Twain|George Orwell
+3|E|A deliberate exaggeration is called…|Hyperbole|Irony|Oxymoron|Simile
+3|E|"Bittersweet" is an example of…|Oxymoron|Onomatopoeia|Alliteration|Metaphor
+3|S|Force is measured in…|Newtons|Joules|Watts|Volts
+3|S|NaCl is the chemical formula for…|Salt|Sugar|Baking soda|Chalk
+3|S|Which part of the cell contains DNA?|Nucleus|Cytoplasm|Cell membrane|Vacuole
+3|S|Roughly how fast does sound travel in air?|340 m/s|34 m/s|3,400 m/s|34,000 m/s
+3|H|Who led Parliament's side in the English Civil War?|Oliver Cromwell|Charles I|Henry VIII|Guy Fawkes
+3|H|In which year was the Gunpowder Plot?|1605|1666|1588|1066
+3|H|The Industrial Revolution began in…|Britain|USA|France|Germany
+3|G|What is the capital of Brazil?|Brasília|Rio de Janeiro|São Paulo|Salvador
+3|G|Earthquakes are recorded with a…|Seismometer|Barometer|Thermometer|Anemometer
+3|A|The trumpet belongs to which instrument family?|Brass|Woodwind|Strings|Percussion
+#gcse
+1|M|Solve 3x − 4 = 11|5|7|3|4
+1|M|Expand 2(x + 5)|2x + 10|2x + 5|x + 10|2x + 7
+1|M|What is 10⁰?|1|0|10|100
+1|E|Who wrote 'Macbeth'?|William Shakespeare|Charles Dickens|Christopher Marlowe|Ben Jonson
+1|E|Who wrote 'A Christmas Carol'?|Charles Dickens|William Shakespeare|Mary Shelley|R. L. Stevenson
+1|S|What is the chemical symbol for sodium?|Na|So|Sd|S
+1|S|The most abundant gas in the air is…|Nitrogen|Oxygen|Carbon dioxide|Argon
+1|H|In which year did World War I begin?|1914|1918|1939|1905
+1|A|In music, what does "forte" mean?|Loud|Soft|Fast|Slow
+2|M|Factorise x² + 5x + 6|(x + 2)(x + 3)|(x + 1)(x + 6)|(x + 5)(x + 1)|(x − 2)(x − 3)
+2|M|Right triangle with sides 3 and 4: the hypotenuse is…|5|7|6|12
+2|M|sin 30° = ?|0.5|1|0|0.87
+2|M|What is 4.5 × 10³?|4,500|450|45,000|0.0045
+2|E|Who wrote 'Frankenstein'?|Mary Shelley|Bram Stoker|Jane Austen|Emily Brontë
+2|E|In 'An Inspector Calls', what is the Inspector's name?|Goole|Birling|Croft|Holmes
+2|E|Who wrote 'Jekyll and Hyde'?|Robert Louis Stevenson|Arthur Conan Doyle|H. G. Wells|Oscar Wilde
+2|S|Which formula is correct?|speed = distance ÷ time|speed = time ÷ distance|speed = distance × time|speed = distance − time
+2|S|What is the atomic number of carbon?|6|12|8|14
+2|S|Photosynthesis happens in the…|Chloroplast|Mitochondrion|Nucleus|Ribosome
+2|S|The noble gases are in which group?|Group 0|Group 1|Group 2|Group 7
+2|H|Who was the leader of Nazi Germany?|Adolf Hitler|Otto von Bismarck|Kaiser Wilhelm II|Erich Honecker
+2|H|Which treaty ended World War I?|Treaty of Versailles|Treaty of Paris|Treaty of Rome|Treaty of Utrecht
+2|H|Who gave the "I Have a Dream" speech?|Martin Luther King Jr.|Malcolm X|Rosa Parks|Barack Obama
+2|G|What mainly causes the tides?|The Moon's gravity|Wind|Earthquakes|Rivers
+3|M|Probability of rolling a 6 on a fair die?|1/6|1/2|6|1/3
+3|M|Solve x² = 49|x = ±7|x = 7 only|x = 24.5|x = ±49
+3|M|The nth term of 3, 7, 11, 15… is|4n − 1|4n + 3|3n + 4|n + 4
+3|M|Increase £80 by 25%|£100|£105|£85|£120
+3|E|Iambic pentameter has how many syllables per line?|10|8|12|14
+3|E|In Romeo and Juliet, Romeo's family is the…|Montagues|Capulets|Tybalts|Veronas
+3|E|Who wrote 'Animal Farm'?|George Orwell|Aldous Huxley|William Golding|J. D. Salinger
+3|S|What is the unit of electrical power?|Watt|Volt|Ohm|Amp
+3|S|V = I × R is known as…|Ohm's law|Newton's law|Hooke's law|Boyle's law
+3|S|The formula for kinetic energy is…|½mv²|mgh|mv|ma
+3|S|Which blood cells fight infection?|White blood cells|Red blood cells|Platelets|Plasma
+3|H|The Cold War was mainly between the USA and…|The Soviet Union|China|Germany|Japan
+3|H|In which year did some UK women first get the vote?|1918|1928|1900|1945
+3|H|Who was the first person in space?|Yuri Gagarin|Neil Armstrong|Buzz Aldrin|John Glenn
+3|G|What is the capital of Turkey?|Ankara|Istanbul|Izmir|Antalya
+3|G|The San Andreas Fault is which kind of plate boundary?|Conservative|Destructive|Constructive|Collision
+#adult
+1|G|Capital of Spain?|Madrid|Barcelona|Seville|Valencia
+1|G|Capital of Norway?|Oslo|Bergen|Stockholm|Helsinki
+1|G|Capital of Sweden?|Stockholm|Gothenburg|Oslo|Malmö
+1|G|Capital of Portugal?|Lisbon|Porto|Madrid|Faro
+1|G|Capital of Greece?|Athens|Thessaloniki|Sparta|Patras
+1|G|Capital of Denmark? 🇩🇰|Copenhagen|Aarhus|Odense|Aalborg
+1|G|The Colosseum is in which city?|Rome|Athens|Naples|Istanbul
+1|G|Currency of Japan? 💴|Yen|Won|Yuan|Ringgit
+1|G|Main language of Brazil?|Portuguese|Spanish|Brazilian|French
+1|S|Largest planet in our Solar System?|Jupiter|Saturn|Neptune|Uranus
+1|S|Planet closest to the Sun?|Mercury|Venus|Mars|Earth
+1|S|Fastest land animal? 🐆|Cheetah|Lion|Pronghorn|Greyhound
+1|S|Hardest natural substance?|Diamond|Titanium|Quartz|Granite
+1|S|Freezing point of water in Fahrenheit?|32 °F|0 °F|10 °F|100 °F
+1|S|What is the largest mammal?|Blue whale|Elephant|Giraffe|Sperm whale
+1|H|In what year did WWII end?|1945|1944|1946|1939
+1|H|Year of the Battle of Hastings? ⚔️|1066|1166|1215|966
+1|H|Who was the first President of the USA?|George Washington|Abraham Lincoln|Thomas Jefferson|John Adams
+1|A|Who painted the Mona Lisa? 🖼️|Leonardo da Vinci|Michelangelo|Raphael|Van Gogh
+1|A|Who wrote Romeo and Juliet? 🎭|William Shakespeare|Charles Dickens|Christopher Marlowe|Jane Austen
+1|A|Who wrote the Harry Potter books? ⚡|J.K. Rowling|Roald Dahl|Philip Pullman|C.S. Lewis
+1|A|The Beatles came from which city?|Liverpool|Manchester|London|Birmingham
+1|A|Which band sang "Bohemian Rhapsody"?|Queen|The Beatles|ABBA|The Rolling Stones
+1|A|ABBA come from which country?|Sweden|Norway|Denmark|Finland
+1|A|Who wrote 'Pride and Prejudice'?|Jane Austen|Charlotte Brontë|George Eliot|Virginia Woolf
+1|P|How many players per team on a football pitch? ⚽|11|10|12|9
+1|P|How many rings on the Olympic flag?|5|4|6|7
+1|P|How often are the Summer Olympics held?|Every 4 years|Every 2 years|Every 5 years|Every year
+1|P|What is 0 called in tennis? 🎾|Love|Nil|Duck|Zero
+1|F|LEGO was invented in which country? 🧱|Denmark|Sweden|Germany|Netherlands
+1|F|How many hours are in a week?|168|148|144|172
+1|F|A baby kangaroo is called a…|Joey|Kit|Cub|Calf
+1|F|How many sides does a 50p coin have?|7|6|8|5
+1|F|Which fruit is dried to make raisins?|Grapes|Plums|Figs|Dates
+1|F|What colour is a giraffe's tongue?|Dark purple-blue|Pink|Red|Yellow
+1|M|Square root of 144?|12|14|11|16
+1|M|How many squares on a chessboard?|64|81|100|49
+2|G|Capital of Australia? 🇦🇺|Canberra|Sydney|Melbourne|Perth
+2|G|Capital of Canada? 🇨🇦|Ottawa|Toronto|Vancouver|Montreal
+2|G|Capital of New Zealand? 🇳🇿|Wellington|Auckland|Christchurch|Queenstown
+2|G|Capital of Iceland?|Reykjavík|Oslo|Nuuk|Tórshavn
+2|G|In which country is Machu Picchu?|Peru|Mexico|Chile|Bolivia
+2|G|The smallest country in the world is…|Vatican City|Monaco|San Marino|Liechtenstein
+2|G|Which country gave the USA the Statue of Liberty?|France|UK|Spain|Netherlands
+2|G|Currency of Switzerland?|Swiss franc|Euro|Krone|Swiss mark
+2|G|Mount Kilimanjaro is in which country?|Tanzania|Kenya|Uganda|Ethiopia
+2|G|Which river flows through Paris?|Seine|Loire|Rhône|Thames
+2|G|Which river flows through Budapest?|Danube|Rhine|Vltava|Elbe
+2|G|The largest island in the world is…|Greenland|Borneo|Madagascar|Great Britain
+2|S|Chemical symbol for gold? 🥇|Au|Ag|Gd|Go
+2|S|Chemical symbol for silver?|Ag|Si|Sv|Au
+2|S|Chemical symbol for copper?|Cu|Co|Cp|Cr
+2|S|Chemical symbol for lead?|Pb|Ld|Le|Pd
+2|S|Fe is the symbol for which element?|Iron|Fluorine|Lead|Fermium
+2|S|Brass is mainly copper and…|Zinc|Tin|Lead|Nickel
+2|S|Bronze is mainly copper and…|Tin|Zinc|Iron|Aluminium
+2|S|Which metal is liquid at room temperature?|Mercury|Gallium|Lithium|Sodium
+2|S|Most abundant gas in Earth's atmosphere?|Nitrogen|Oxygen|Carbon dioxide|Argon
+2|S|Hottest planet in our Solar System?|Venus|Mercury|Mars|Jupiter
+2|S|How many bones in the adult human body? 🦴|206|186|226|256
+2|S|Largest organ of the human body?|Skin|Liver|Brain|Lungs
+2|S|How many hearts does an octopus have? 🐙|3|1|2|8
+2|S|Which vitamin does sunlight help us make? ☀️|Vitamin D|Vitamin C|Vitamin A|Vitamin B12
+2|S|Water boils at what temperature in Fahrenheit?|212 °F|100 °F|180 °F|250 °F
+2|S|Who discovered penicillin? 💊|Alexander Fleming|Louis Pasteur|Marie Curie|Edward Jenner
+2|S|Which planet spins on its side?|Uranus|Neptune|Saturn|Venus
+2|S|How many chambers does the human heart have?|4|2|3|6
+2|S|Longest bone in the human body?|Femur|Tibia|Humerus|Spine
+2|H|In what year did the Titanic sink? 🚢|1912|1905|1921|1898
+2|H|In what year did humans first land on the Moon?|1969|1965|1972|1961
+2|H|In what year did the Berlin Wall fall?|1989|1991|1985|1979
+2|H|First female Prime Minister of the UK?|Margaret Thatcher|Theresa May|Liz Truss|Barbara Castle
+2|H|Who is credited with inventing the telephone? ☎️|Alexander Graham Bell|Thomas Edison|Nikola Tesla|Guglielmo Marconi
+2|H|Who was the British monarch during WWII?|George VI|Edward VIII|George V|Elizabeth II
+2|A|Composer who kept writing music after going deaf? 🎼|Beethoven|Mozart|Bach|Chopin
+2|A|Danish author of 'The Little Mermaid'?|Hans Christian Andersen|Brothers Grimm|Roald Dahl|Charles Perrault
+2|A|How many keys on a standard piano? 🎹|88|76|92|100
+2|A|Who painted 'The Scream'?|Edvard Munch|Gustav Klimt|Salvador Dalí|Claude Monet
+2|A|Who composed 'The Four Seasons'?|Vivaldi|Bach|Handel|Mozart
+2|A|Which Shakespeare play features Shylock?|The Merchant of Venice|Othello|Hamlet|King Lear
+2|A|Who wrote '1984'?|George Orwell|Aldous Huxley|Ray Bradbury|H. G. Wells
+2|A|Which artist cut off part of his own ear?|Vincent van Gogh|Pablo Picasso|Salvador Dalí|Claude Monet
+2|P|How many players in a rugby union team? 🏉|15|13|11|12
+2|P|In table tennis, a game is usually played to… 🏓|11|21|15|10
+2|P|How many points is the bullseye in darts? 🎯|50|25|100|60
+2|P|In golf, one under par is a…|Birdie|Eagle|Bogey|Albatross
+2|P|Who won the first FIFA World Cup in 1930?|Uruguay|Brazil|Argentina|Italy
+2|P|How long is a marathon?|42.2 km|40 km|26.2 km|50 km
+2|P|In which sport do you perform a "kata"? 🥋|Karate|Fencing|Tennis|Rowing
+2|P|How many players per basketball team on court?|5|6|7|4
+2|F|Karate developed in which country? 🥋|Japan|China|Korea|Thailand
+2|F|Which country invented paper?|China|Egypt|Greece|India
+2|F|Longest-reigning British monarch?|Elizabeth II|Victoria|George III|Henry VIII
+2|F|The Danish word "hygge" roughly means…|Cosiness|Hello|Cheers|Breakfast
+2|F|How many legs does a lobster have? 🦞|10|8|6|12
+2|F|How many teeth does an adult usually have? 🦷|32|28|36|30
+2|M|What is 15% of 200?|30|15|25|35
+2|M|How many minutes are in a day?|1,440|1,240|1,640|2,400
+2|M|Pi to two decimal places?|3.14|3.41|3.12|3.16
+2|M|What is 7 × 13?|91|81|93|101
+3|G|Which country has the longest coastline?|Canada|Russia|Norway|Australia
+3|G|Which African country was once called Abyssinia?|Ethiopia|Eritrea|Sudan|Somalia
+3|G|The deepest ocean trench is the…|Mariana Trench|Java Trench|Tonga Trench|Puerto Rico Trench
+3|G|Which country has the most time zones (with territories)?|France|Russia|USA|UK
+3|G|Which sea has no coastline?|Sargasso Sea|Red Sea|Dead Sea|Caspian Sea
+3|G|Currency of Denmark?|Krone|Euro|Mark|Florin
+3|S|The most abundant element in the universe is…|Hydrogen|Helium|Oxygen|Carbon
+3|S|Which metal has the highest melting point?|Tungsten|Iron|Titanium|Platinum
+3|S|Which metal is the best electrical conductor?|Silver|Copper|Gold|Aluminium
+3|S|What does W stand for on the periodic table?|Tungsten|Tin|Titanium|Zinc
+3|S|Approximate age of the universe?|13.8 billion years|4.5 billion years|100 million years|1 trillion years
+3|S|The closest star system to the Sun is…|Alpha Centauri|Sirius|Betelgeuse|Vega
+3|S|How many elements are on the periodic table?|118|108|128|98
+3|S|Universal donor blood type? 🩸|O negative|AB positive|A positive|B negative
+3|S|Unit of electrical resistance?|Ohm|Volt|Watt|Ampere
+3|S|Approx. speed of light?|300,000 km/s|30,000 km/s|3,000 km/s|3 million km/s
+3|S|What does the 'D' in DNA stand for?|Deoxyribo-|Double|Di-|Dynamic
+3|S|The study of fungi is called…|Mycology|Botany|Zoology|Entomology
+3|H|Who was the last Tsar of Russia?|Nicholas II|Alexander III|Peter the Great|Ivan IV
+3|H|In what year was the Magna Carta sealed?|1215|1066|1415|1312
+3|H|Bluetooth technology is named after which Danish king?|Harald Bluetooth|Cnut|Sweyn Forkbeard|Gorm the Old
+3|H|Which King of England was also King of Denmark and Norway?|Cnut|Harold|Alfred|Æthelred
+3|H|In which year did the Chernobyl disaster happen?|1986|1979|1991|1984
+3|H|Who wrote 'The Communist Manifesto' with Engels?|Karl Marx|Lenin|Trotsky|Stalin
+3|A|Who painted 'Girl with a Pearl Earring'?|Johannes Vermeer|Rembrandt|Rubens|Van Eyck
+3|A|In which city is the Prado museum?|Madrid|Paris|Florence|Lisbon
+3|A|Who composed 'The Nutcracker'?|Tchaikovsky|Stravinsky|Rachmaninoff|Prokofiev
+3|A|Which novel begins "Call me Ishmael"?|Moby-Dick|Treasure Island|The Old Man and the Sea|Robinson Crusoe
+3|P|Where were the first modern Olympics held (1896)?|Athens|Paris|London|Rome
+3|P|In snooker, how many points is the black ball worth?|7|6|5|8
+3|P|The standard maximum break in snooker is…|147|155|180|100
+3|F|A group of crows is called a…|Murder|Pride|Gaggle|Pod
+3|F|The national animal of Scotland is the…|Unicorn|Lion|Stag|Golden eagle
+3|F|Which language has the most native speakers?|Mandarin Chinese|English|Spanish|Hindi
+3|F|Primary colours of LIGHT?|Red, green, blue|Red, yellow, blue|Cyan, magenta, yellow|Red, blue, white
+3|M|Sum of the interior angles of a hexagon?|720°|540°|360°|900°
+3|M|0.125 as a fraction?|1/8|1/6|1/12|1/4
+3|M|How many zeros in one billion?|9|6|12|8
+3|M|How many sides does a dodecagon have?|12|10|20|8
+3|M|Pythagoras' theorem is about which triangles?|Right-angled|Equilateral|Isosceles|Scalene
+</script>
+<script>
+/* ================= LEVELS ================= */
+const LV=[
+ {k:'rec', s:'Rec', n:'Reception', age:'4–5', t:40},
+ {k:'y1',  s:'Y1',  n:'Year 1',    age:'5–6', t:35},
+ {k:'y2',  s:'Y2',  n:'Year 2',    age:'6–7', t:30},
+ {k:'y3',  s:'Y3',  n:'Year 3',    age:'7–8', t:28},
+ {k:'y4',  s:'Y4',  n:'Year 4',    age:'8–9', t:25},
+ {k:'y5',  s:'Y5',  n:'Year 5',    age:'9–10',t:22},
+ {k:'y6',  s:'Y6',  n:'Year 6',    age:'10–11',t:20},
+ {k:'ks3', s:'Sec', n:'Secondary', age:'11–14',t:18},
+ {k:'gcse',s:'GCSE',n:'GCSE',      age:'14–16',t:16},
+ {k:'adult',s:'Adult',n:'Grown-up',age:'16+', t:15}
+];
+const KID_MAX=8, ADULT=9, LEVEL_EVERY=30, MIN_TIME=5;
+const CATS={M:'🔢 Maths',E:'📝 English',S:'🔬 Science',H:'🏛️ History',G:'🌍 Geography',A:'🎨 Arts',P:'🏅 Sport',F:'🎉 Fun'};
+const DIFF=['','🟢 Easy','🟡 Medium','🔴 Hard'];
+
+/* parse bank */
+const BANK=LV.map(()=>({1:[],2:[],3:[]}));
+(function(){
+  let cur=-1;
+  document.getElementById('qbank').textContent.split('\n').forEach(line=>{
+    line=line.trim(); if(!line) return;
+    if(line[0]==='#'){cur=LV.findIndex(l=>l.k===line.slice(1));return}
+    const p=line.split('|'); if(cur<0||p.length<5) return;
+    BANK[cur][+p[0]].push({c:p[1],q:p[2],a:p[3],w:p.slice(4)});
+  });
+})();
+
+/* ================= HELPERS ================= */
+const $=id=>document.getElementById(id);
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fmt(n){if(n<0)return '−'+fmt(-n);return Number.isInteger(n)?n.toLocaleString('en-GB'):String(n)}
+function near(ans,spread,{min=0,neg=false,dec=0}={}){
+  const out=new Set(),step=dec?Math.pow(10,-dec):1;let guard=0;
+  while(out.size<3&&guard++<200){
+    let k=R(1,Math.max(2,spread))*(Math.random()<.5?-1:1);
+    let v=dec?Math.round((ans+k*step)*1e6)/1e6:ans+k;
+    if(!neg&&v<min) continue; if(v===ans) continue; out.add(v);
+  }
+  let k=1;while(out.size<3){out.add(ans+spread+k);k++}
+  return [...out];
+}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
+
+/* ================= GENERATED MATHS ================= */
+function genMath(y,t){
+  let q,a,w,f=fmt;
+  const E=pick(['🍎','⭐','🐶','🎈','🍓','🐟','🚗','🌸','⚽','🦆']);
+  switch(y){
+   case 0:
+    if(t<3){const n=t===1?R(1,5):R(4,10);q=`How many? ${E.repeat(n)}`;a=n;w=near(a,2,{min:1})}
+    else{const x=R(1,4),z=R(1,4);q=`${E.repeat(x)} + ${E.repeat(z)} = ?`;a=x+z;w=near(a,2,{min:1})}
+    break;
+   case 1:
+    if(t===1){const x=R(1,6),z=R(1,4);q=`${x} + ${z} = ?`;a=x+z}
+    else if(t===2){const x=R(11,20),z=R(1,9);q=`${x} − ${z} = ?`;a=x-z}
+    else{const z=R(1,9);q=`? + ${z} = 10`;a=10-z}
+    w=near(a,2);break;
+   case 2:
+    if(t===1){const n=pick([2,5,10]),m=R(1,12);q=`${n} × ${m} = ?`;a=n*m;w=near(a,n>2?n:3,{min:1})}
+    else if(t===2){const x=R(21,89),z=R(1,9);if(Math.random()<.5){q=`${x} + ${z} = ?`;a=x+z}else{q=`${x} − ${z} = ?`;a=x-z}w=near(a,3)}
+    else{if(Math.random()<.5){const x=R(12,59),tn=R(1,4)*10;q=`${x} + ${tn} = ?`;a=x+tn;w=[a+10,a-10,a+1]}else{const d=R(11,45);q=`Double ${d} = ?`;a=2*d;w=near(a,4)}}
+    break;
+   case 3:
+    if(t===1){const n=pick([3,4]),m=R(2,12);q=`${n} × ${m} = ?`;a=n*m;w=near(a,n,{min:1})}
+    else if(t===2){const p=pick([3,4,8]),m=R(2,12);if(Math.random()<.5){q=`${p} × ${m} = ?`;a=p*m}else{q=`${p*m} ÷ ${p} = ?`;a=m}w=near(a,3,{min:1})}
+    else{const x=R(120,780),z=R(15,95);q=`${x} + ${z} = ?`;a=x+z;w=[a+10,a-10,a+100]}
+    break;
+   case 4:
+    if(t===1){const n=pick([6,7]),m=R(2,12);q=`${n} × ${m} = ?`;a=n*m;w=near(a,n,{min:1})}
+    else if(t===2){const p=pick([9,11,12]),m=R(2,12);if(Math.random()<.5){q=`${p} × ${m} = ?`;a=p*m}else{q=`${f(p*m)} ÷ ${p} = ?`;a=m}w=near(a,a>20?p:3,{min:1})}
+    else{if(Math.random()<.5){const x=R(13,99);q=`${x} × 100 = ?`;a=x*100;w=[x*10,x*1000,a+100]}else{const x=R(2000,9000),z=R(150,950);q=`${f(x)} − ${z} = ?`;a=x-z;w=[a+100,a-10,a+10]}}
+    break;
+   case 5:
+    if(t===1){const n=R(3,12);q=`What is ${n}² ?`;a=n*n;w=[n*2,(n+1)*(n+1),a-n].filter(v=>v!==a)}
+    else if(t===2){const x=R(12,49),z=R(3,9);q=`${x} × ${z} = ?`;a=x*z;w=[a+z,a-10,a+10]}
+    else{const x=R(11,89)/10,z=R(105,495)/100;a=Math.round((x+z)*100)/100;q=`${x.toFixed(1)} + ${z.toFixed(2)} = ?`;
+      const ws=[a+1,a-.1,a+.01].map(v=>Math.round(v*100)/100);return mk('M',q,a.toFixed(2),ws.map(v=>v.toFixed(2)))}
+    break;
+   case 6:
+    if(t===1){const p=pick([10,20,25,50]),amt=R(2,20)*20;q=`What is ${p}% of ${amt}?`;a=amt*p/100;w=near(a,Math.max(3,Math.round(a/4)),{min:1})}
+    else if(t===2){const x=R(2,20),b=R(2,9),c=R(2,9);q=`${x} + ${b} × ${c} = ?`;a=x+b*c;w=[(x+b)*c,x*b+c,a+b]}
+    else{const x=R(12,35),z=R(11,25);q=`${x} × ${z} = ?`;a=x*z;w=[a+10,a-x,a+z]}
+    break;
+   case 7:
+    if(t===1){const x=R(-15,5),z=R(-12,12);q=`${f(x)} + (${f(z)}) = ?`;a=x+z;w=[x-z,-a||a+2,a+1].filter(v=>v!==a)}
+    else if(t===2){const x=R(2,15),c=R(2,9);if(Math.random()<.5){q=`Solve: ${c}x = ${c*x}`;a=x}else{q=`Solve: x + ${c} = ${x+c}`;a=x}w=near(a,3,{min:1})}
+    else{const n=R(11,20);q=`What is √${n*n} ?`;a=n;w=near(a,3,{min:5})}
+    break;
+   case 8:
+    if(t===1){const x=R(2,12),c=R(2,7),b=R(1,15);q=`Solve: ${c}x + ${b} = ${c*x+b}`;a=x;w=near(a,3,{min:1})}
+    else if(t===2){const p=pick([10,20,25,50]),amt=R(2,20)*40;q=`Increase £${amt} by ${p}%`;a=amt*(100+p)/100;return mk('M',q,'£'+f(a),[a+p,a-amt*p/200,amt+p].map(v=>'£'+f(Math.round(v))))}
+    else{const x=R(2,6),c=R(2,5),b=R(1,9);q=`If x = ${x}, what is ${c}x² + ${b} ?`;a=c*x*x+b;w=[(c*x)*(c*x)+b,c*x*2+b,a+c]}
+    break;
+   default:
+    if(t===1){const x=R(12,99),z=R(3,9);q=`${x} × ${z} = ?`;a=x*z;w=[a+10,a-z,a+z]}
+    else if(t===2){const p=pick([5,15,20,30,40]),amt=R(2,30)*20;q=`What is ${p}% of ${f(amt)}?`;a=amt*p/100;w=near(a,Math.max(3,Math.round(a/5)),{min:1})}
+    else{if(Math.random()<.5){const n=R(13,29);q=`What is ${n}² ?`;a=n*n;w=[a+n,a-10,n*20]}else{const x=R(13,49),z=R(13,29);q=`${x} × ${z} = ?`;a=x*z;w=[a+10,a-x,a+100]}}
+  }
+  return mk('M',q,f(a),w.map(f));
+}
+function mk(c,q,a,w){
+  a=String(a);const out=[];
+  w.map(String).forEach(v=>{if(v!==a&&!out.includes(v))out.push(v)});
+  let k=1;const num=parseFloat(a.replace(/[£,]/g,'').replace('−','-'));
+  while(out.length<3){const pre=a.startsWith('£')?'£':'';const v=pre+fmt(Math.round((num+k*(k%2?1:-1)*(1+Math.floor(k/2)))*100)/100);if(v!==a&&!out.includes(v))out.push(v);k++}
+  return {c,q,a,w:out.slice(0,3),gen:true};
+}
+
+/* ================= STATE ================= */
+let roster=[];
+try{const s=JSON.parse(localStorage.getItem('ppk_open_roster')||'null');if(Array.isArray(s)&&s.length)roster=s}catch(e){}
+function saveRoster(){try{localStorage.setItem('ppk_open_roster',JSON.stringify(roster))}catch(e){}}
+let startLives=5,useTimer=true,useLevels=true,autoRead=true,soundOn=true;
+let game=null; const decks={};
+
+/* ================= SOUND & SPEECH ================= */
+let ac=null;
+function tone(fq,d,t=0,type='sine',v=.16){if(!soundOn)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=fq;o.connect(g);g.connect(ac.destination);const s=ac.currentTime+t;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.start(s);o.stop(s+d+.02)}catch(e){}}
+const sfx={
+ ping:()=>{tone(880,.1);tone(660,.1,.13)},
+ right:()=>{tone(660,.12);tone(880,.12,.12);tone(1320,.25,.24)},
+ wrong:()=>{tone(300,.25,0,'sawtooth',.1);tone(210,.4,.25,'sawtooth',.1)},
+ tick:()=>tone(1200,.05,0,'square',.05),
+ gold:()=>[784,988,1175,1568].forEach((f,i)=>tone(f,.15,i*.1,'triangle')),
+ lvl:()=>[392,523,659,784,1047].forEach((f,i)=>tone(f,.18,i*.11,'triangle')),
+ win:()=>[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,.2,i*.15,'triangle'))
+};
+function say(text){try{if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-GB';u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+
+/* ================= SETUP UI ================= */
+function poolLabel(p){
+  if(p.kind==='adult') return 'Grown-up · general knowledge';
+  const ys=p.years.slice().sort((a,b)=>a-b);
+  return ys.length>1?'Mix: '+ys.map(i=>LV[i].n).join(' + '):LV[ys[0]].n+' · age '+LV[ys[0]].age;
+}
+function renderRoster(){
+  const box=$('playerList');box.innerHTML='';
+  roster.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='prow'+(p.on?' on':'');
+    let pool='';
+    if(p.kind==='kid'){
+      pool=`<div class="pool"><div class="lbl">QUESTION POOL · tap one or more to mix</div><div class="yrs">`+
+        LV.slice(0,KID_MAX+1).map((l,j)=>`<button class="yr${p.years.includes(j)?' on':''}" data-j="${j}">${l.s}</button>`).join('')+
+        `</div><div class="mixhint">${esc(poolLabel(p))}</div></div>`;
+    }
+    d.innerHTML=`<div class="phead">${avatar(p,'sm')}<div class="pinfo"><b>${esc(p.name)}</b><span>${esc(poolLabel(p))}</span></div>`+
+      `<button class="rm" title="remove">✖</button>`+`<button class="sw${p.on?' on':''}" aria-label="playing"></button></div>`+pool;
+    d.querySelector('.sw').onclick=()=>{p.on=!p.on;sfx.ping();saveRoster();renderRoster()};
+    const rm=d.querySelector('.rm');if(rm)rm.onclick=()=>{roster.splice(i,1);saveRoster();renderRoster()};
+    d.querySelectorAll('.yr').forEach(b=>b.onclick=()=>{
+      const j=+b.dataset.j;
+      if(p.years.includes(j)){if(p.years.length>1)p.years=p.years.filter(x=>x!==j)}else p.years.push(j);
+      sfx.ping();saveRoster();renderRoster();
+    });
+    box.appendChild(d);
+  });
+  if($('emptyMsg'))$('emptyMsg').style.display=roster.length?'none':'block';
+}
+/* ================= FACE BUILDER (SVG) ================= */
+const INK='#1e293b';
+const FACE_COLS=['#fde0c8','#f1c27d','#d9a066','#a66a3f','#6b4226','#60a5fa','#38bdf8','#a78bfa','#f472b6','#fb7185','#4ade80','#a3e635','#facc15','#fb923c','#94a3b8','#f8fafc'];
+function shade(hex,amt){const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;const f=amt<0?0:255,p=Math.abs(amt);r=Math.round((f-r)*p+r);g=Math.round((f-g)*p+g);b=Math.round((f-b)*p+b);return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+function star(cx,cy,R,r){r=r||R*.45;let pts=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;pts.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1))}return pts.join(' ')}
+function heart(cx,cy,s){return `M${cx} ${cy+s*.9} C${cx-s*1.6} ${cy-s*.1} ${cx-s*.9} ${cy-s*1.2} ${cx} ${cy-s*.45} C${cx+s*.9} ${cy-s*1.2} ${cx+s*1.6} ${cy-s*.1} ${cx} ${cy+s*.9}Z`}
+const EX=[38,62],EY=50;
+const eyeDot=x=>`<circle cx="${x}" cy="${EY}" r="4.6" fill="${INK}"/><circle cx="${x+1.6}" cy="${EY-1.6}" r="1.5" fill="#fff"/>`;
+const eyeBig=(x,dx=1)=>`<circle cx="${x}" cy="${EY}" r="8.5" fill="#fff" stroke="${INK}" stroke-width="1.6"/><circle cx="${x+dx}" cy="${EY+1}" r="4.6" fill="${INK}"/><circle cx="${x+dx+1.6}" cy="${EY-.8}" r="1.6" fill="#fff"/>`;
+const eyeHappy=x=>`<path d="M${x-7} ${EY+2} Q${x} ${EY-7} ${x+7} ${EY+2}" stroke="${INK}" stroke-width="3.6" fill="none" stroke-linecap="round"/>`;
+const EYES=[
+ {n:'Dots',d:()=>EX.map(eyeDot).join('')},
+ {n:'Big',d:()=>EX.map(x=>eyeBig(x)).join('')},
+ {n:'Happy',d:()=>EX.map(eyeHappy).join('')},
+ {n:'Wink',d:()=>eyeBig(EX[0])+eyeHappy(EX[1])},
+ {n:'Sleepy',d:()=>EX.map(x=>`<path d="M${x-8} ${EY} Q${x} ${EY+9} ${x+8} ${EY}Z" fill="#fff" stroke="${INK}" stroke-width="1.6"/><circle cx="${x}" cy="${EY+3.2}" r="3" fill="${INK}"/><path d="M${x-9} ${EY} L${x+9} ${EY}" stroke="${INK}" stroke-width="3.2" stroke-linecap="round"/>`).join('')},
+ {n:'Stars',d:()=>EX.map(x=>`<polygon points="${star(x,EY,8)}" fill="#fbbf24" stroke="#b45309" stroke-width="1.5" stroke-linejoin="round"/>`).join('')},
+ {n:'Angry',d:()=>EX.map(x=>eyeBig(x)).join('')+`<path d="M29 39 L45 44 M71 39 L55 44" stroke="${INK}" stroke-width="3.6" stroke-linecap="round"/>`},
+ {n:'Silly',d:()=>eyeBig(EX[0],3.5)+eyeBig(EX[1],-3.5)},
+ {n:'Hearts',d:()=>EX.map(x=>`<path d="${heart(x,EY,6.5)}" fill="#f43f5e" stroke="#9f1239" stroke-width="1.4"/>`).join('')},
+ {n:'Surprised',d:()=>EX.map(x=>`<circle cx="${x}" cy="${EY}" r="9" fill="#fff" stroke="${INK}" stroke-width="1.6"/><circle cx="${x}" cy="${EY}" r="2.6" fill="${INK}"/>`).join('')+`<path d="M30 37 Q38 32 45 37 M55 37 Q62 32 70 37" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round"/>`}
+];
+const NOSES=[
+ {n:'None',d:()=>''},
+ {n:'Dot',d:f=>`<ellipse cx="50" cy="62" rx="3.6" ry="2.6" fill="${shade(f,-.35)}"/>`},
+ {n:'Button',d:f=>`<circle cx="50" cy="61" r="6" fill="${shade(f,-.18)}"/><circle cx="47.6" cy="62.6" r="1.4" fill="${INK}" opacity=".55"/><circle cx="52.4" cy="62.6" r="1.4" fill="${INK}" opacity=".55"/>`},
+ {n:'Pointy',d:f=>`<path d="M50 52 L44 64 L51.5 64" stroke="${shade(f,-.4)}" stroke-width="2.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`},
+ {n:'Clown',d:()=>`<circle cx="50" cy="61" r="7.2" fill="#ef4444" stroke="#991b1b" stroke-width="1.2"/><circle cx="47.6" cy="58.6" r="2.2" fill="#fff" opacity=".75"/>`},
+ {n:'Piggy',d:()=>`<ellipse cx="50" cy="62" rx="8.5" ry="6" fill="#f9a8d4" stroke="#db2777" stroke-width="1.5"/><ellipse cx="47" cy="62" rx="1.7" ry="2.6" fill="#9d174d"/><ellipse cx="53" cy="62" rx="1.7" ry="2.6" fill="#9d174d"/>`},
+ {n:'Big',d:f=>`<ellipse cx="50" cy="61" rx="7.5" ry="5" fill="${shade(f,-.22)}"/><ellipse cx="48" cy="59.5" rx="2.4" ry="1.4" fill="#fff" opacity=".45"/>`}
+];
+const TONGUE='#fb7185',MOUTHIN='#7f1d1d';
+const MOUTHS=[
+ {n:'Smile',ty:76.5,d:()=>`<path d="M38 71 Q50 83 62 71" stroke="${INK}" stroke-width="3.6" fill="none" stroke-linecap="round"/>`},
+ {n:'Grin',ty:68,d:()=>`<path d="M35 68 Q50 90 65 68Z" fill="${MOUTHIN}" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/><ellipse cx="50" cy="79.5" rx="6.5" ry="3.2" fill="${TONGUE}"/>`},
+ {n:'Oh!',ty:66.5,d:()=>`<ellipse cx="50" cy="74" rx="6" ry="7.5" fill="${MOUTHIN}" stroke="${INK}" stroke-width="2.6"/>`},
+ {n:'Flat',ty:74,d:()=>`<path d="M40 74 L60 74" stroke="${INK}" stroke-width="3.6" stroke-linecap="round"/>`},
+ {n:'Tongue',ty:76.5,d:()=>`<path d="M44.5 75 Q44.5 88 50 88 Q55.5 88 55.5 75Z" fill="${TONGUE}" stroke="#be123c" stroke-width="1.5"/><path d="M50 77 L50 84" stroke="#be123c" stroke-width="1.2"/><path d="M38 71 Q50 83 62 71" stroke="${INK}" stroke-width="3.6" fill="none" stroke-linecap="round"/>`},
+ {n:'Sad',ty:72,d:()=>`<path d="M39 78 Q50 67 61 78" stroke="${INK}" stroke-width="3.6" fill="none" stroke-linecap="round"/>`},
+ {n:'Laugh',ty:67,d:()=>`<path d="M34 67 L66 67 Q66 89 50 89 Q34 89 34 67Z" fill="${MOUTHIN}" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/><ellipse cx="50" cy="83.5" rx="8" ry="4" fill="${TONGUE}"/>`},
+ {n:'Smirk',ty:75,d:()=>`<path d="M39 74 Q52 79 62 68" stroke="${INK}" stroke-width="3.6" fill="none" stroke-linecap="round"/>`}
+];
+const tooth=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="1.2" fill="#fff" stroke="${INK}" stroke-width="1"/>`;
+const TEETH=[
+ {n:'None',d:()=>''},
+ {n:'Bunny',d:y=>tooth(45,y-.5,4.9,7.5)+tooth(50.1,y-.5,4.9,7.5)},
+ {n:'Gap',d:y=>tooth(43.4,y-.5,5,6.5)+tooth(51.6,y-.5,5,6.5)},
+ {n:'Fangs',d:y=>`<polygon points="40.5,${y-.5} 44.5,${y-.5} 42.5,${y+7}" fill="#fff" stroke="${INK}" stroke-width="1" stroke-linejoin="round"/><polygon points="55.5,${y-.5} 59.5,${y-.5} 57.5,${y+7}" fill="#fff" stroke="${INK}" stroke-width="1" stroke-linejoin="round"/>`},
+ {n:'Braces',d:y=>[41,45.6,50.2,54.8].map(x=>tooth(x,y-.5,4.4,5.4)).join('')+`<path d="M40 ${y+2.2} L60 ${y+2.2}" stroke="#94a3b8" stroke-width="1.6"/>`+[43.2,47.8,52.4,57].map(x=>`<rect x="${x-1}" y="${y+1.2}" width="2" height="2" fill="#64748b"/>`).join('')},
+ {n:'One',d:y=>tooth(47.5,y-.5,5,7.5)},
+ {n:'Gold',d:y=>tooth(45,y-.5,4.9,6.5)+`<rect x="50.1" y="${y-.5}" width="4.9" height="6.5" rx="1.2" fill="#fbbf24" stroke="#b45309" stroke-width="1"/>`},
+ {n:'Row',d:y=>`<rect x="40" y="${y-.5}" width="20" height="5.5" rx="1.8" fill="#fff" stroke="${INK}" stroke-width="1"/><path d="M45 ${y-.5} V${y+5} M50 ${y-.5} V${y+5} M55 ${y-.5} V${y+5}" stroke="${INK}" stroke-width=".8"/>`}
+];
+const GLASSES=[
+ {n:'None',d:()=>''},
+ {n:'Round',d:()=>`<g stroke="${INK}" stroke-width="2.6" fill="#fff" fill-opacity=".18"><circle cx="38" cy="50" r="10.5"/><circle cx="62" cy="50" r="10.5"/></g><path d="M48.5 49 Q50 46.5 51.5 49 M27.5 48 L17 45 M72.5 48 L83 45" stroke="${INK}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`},
+ {n:'Square',d:()=>`<g stroke="${INK}" stroke-width="2.6" fill="#fff" fill-opacity=".18"><rect x="27" y="41.5" width="22" height="17" rx="3"/><rect x="51" y="41.5" width="22" height="17" rx="3"/></g><path d="M49 48 L51 48 M27 47 L17 44 M73 47 L83 44" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>`},
+ {n:'Shades',d:()=>`<rect x="25.5" y="42" width="23.5" height="15" rx="6" fill="#0f172a"/><rect x="51" y="42" width="23.5" height="15" rx="6" fill="#0f172a"/><path d="M49 46 L51 46 M25.5 46 L17 43 M74.5 46 L83 43" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/><path d="M29 46 L35 46 M54.5 46 L60.5 46" stroke="#fff" stroke-width="1.8" opacity=".55" stroke-linecap="round"/>`},
+ {n:'Stars',d:()=>EX.map(x=>`<polygon points="${star(x,EY,12.5,6.5)}" fill="#fbbf24" fill-opacity=".35" stroke="#f59e0b" stroke-width="2.4" stroke-linejoin="round"/>`).join('')},
+ {n:'Hearts',d:()=>EX.map(x=>`<path d="${heart(x,EY+1,10)}" fill="#f43f5e" fill-opacity=".8" stroke="#9f1239" stroke-width="2"/>`).join('')},
+ {n:'Monocle',d:()=>`<circle cx="62" cy="50" r="11" fill="#fff" fill-opacity=".18" stroke="#d97706" stroke-width="3"/><path d="M71 56 Q80 70 72 88" stroke="#d97706" stroke-width="1.6" fill="none" stroke-dasharray="2 2"/>`},
+ {n:'Goggles',d:()=>`<rect x="13" y="44" width="74" height="11" rx="5" fill="#0ea5e9"/><circle cx="38" cy="50" r="11" fill="#bae6fd" fill-opacity=".75" stroke="#0369a1" stroke-width="3"/><circle cx="62" cy="50" r="11" fill="#bae6fd" fill-opacity=".75" stroke="#0369a1" stroke-width="3"/>`}
+];
+const HATS=[
+ {n:'None',d:()=>''},
+ {n:'Cap',d:()=>`<path d="M16 40 C16 6 84 6 84 40Z" fill="#ef4444" stroke="#991b1b" stroke-width="2"/><path d="M50 10 L50 39" stroke="#991b1b" stroke-width="1.4" opacity=".6"/><circle cx="50" cy="10" r="3" fill="#991b1b"/><path d="M14 40 Q50 31 86 40 Q50 52 14 40Z" fill="#b91c1c" stroke="#7f1d1d" stroke-width="1.6"/>`},
+ {n:'Back cap',d:f=>`<path d="M20 28 Q2 20 4 10 Q16 14 30 22Z" fill="#1d4ed8"/><path d="M16 42 C16 6 84 6 84 42Z" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/><rect x="41" y="31" width="18" height="9" rx="4.5" fill="${f}" stroke="#1e3a8a" stroke-width="1.6"/><circle cx="50" cy="10" r="3" fill="#1e3a8a"/>`},
+ {n:'Beanie',d:()=>`<path d="M16 42 C16 2 84 2 84 42Z" fill="#14b8a6" stroke="#0f766e" stroke-width="2"/><rect x="13" y="33" width="74" height="12" rx="6" fill="#0d9488" stroke="#0f766e" stroke-width="1.6"/><path d="M22 34 V44 M30 34 V44 M38 34 V44 M46 34 V44 M54 34 V44 M62 34 V44 M70 34 V44 M78 34 V44" stroke="#115e59" stroke-width="1.2"/><circle cx="50" cy="3" r="7.5" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>`},
+ {n:'Top hat',d:()=>`<rect x="31" y="-6" width="38" height="33" rx="3" fill="#1f2937" stroke="#030712" stroke-width="1.6"/><rect x="31" y="16" width="38" height="6" fill="#ef4444"/><ellipse cx="50" cy="27" rx="31" ry="5.5" fill="#111827"/>`},
+ {n:'Crown',d:()=>`<polygon points="27,31 25,8 38,19 50,0 62,19 75,8 73,31" fill="#fbbf24" stroke="#b45309" stroke-width="2" stroke-linejoin="round"/><circle cx="50" cy="23" r="3.4" fill="#ef4444"/><circle cx="37" cy="26" r="2.4" fill="#3b82f6"/><circle cx="63" cy="26" r="2.4" fill="#22c55e"/>`},
+ {n:'Party',d:()=>`<polygon points="35,28 50,-6 65,28" fill="#a855f7" stroke="#6b21a8" stroke-width="2" stroke-linejoin="round"/><path d="M41.5 14 L58.5 14 M38.5 21 L61.5 21 M45 6 L55 6" stroke="#fde047" stroke-width="3"/><circle cx="50" cy="-7" r="4.5" fill="#fde047"/>`},
+ {n:'Cowboy',d:()=>`<path d="M30 31 Q27 2 50 6 Q73 2 70 31Z" fill="#92400e" stroke="#451a03" stroke-width="1.8"/><path d="M44 8 Q50 16 56 8" stroke="#451a03" stroke-width="1.6" fill="none"/><rect x="30" y="23" width="40" height="5" fill="#451a03"/><path d="M4 28 Q50 46 96 28 Q92 38 50 41 Q8 38 4 28Z" fill="#78350f" stroke="#451a03" stroke-width="1.6"/>`},
+ {n:'Wizard',d:()=>`<polygon points="26,31 56,-10 74,31" fill="#6d28d9" stroke="#3b0764" stroke-width="2" stroke-linejoin="round"/><polygon points="${star(50,12,4)}" fill="#fde047"/><polygon points="${star(60,22,3)}" fill="#fde047"/><ellipse cx="50" cy="31" rx="33" ry="6" fill="#5b21b6" stroke="#3b0764" stroke-width="1.6"/>`},
+ {n:'Spiky',d:()=>`<polygon points="17,42 18,24 27,30 28,12 39,23 45,5 54,21 61,6 66,23 76,13 74,30 84,25 83,42 72,32 60,36 50,30 40,36 28,32" fill="#facc15" stroke="#ca8a04" stroke-width="2" stroke-linejoin="round"/>`},
+ {n:'Curly',d:()=>[[20,38],[24,27],[32,19],[42,14],[52,13],[62,16],[71,22],[78,30],[81,40]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="9" fill="#7c2d12" stroke="#431407" stroke-width="1.5"/>`).join('')},
+ {n:'Phones',d:()=>`<path d="M15 56 Q13 12 50 12 Q87 12 85 56" stroke="#334155" stroke-width="6" fill="none" stroke-linecap="round"/><rect x="6" y="46" width="14" height="22" rx="6" fill="#ef4444" stroke="#7f1d1d" stroke-width="1.6"/><rect x="80" y="46" width="14" height="22" rx="6" fill="#ef4444" stroke="#7f1d1d" stroke-width="1.6"/>`},
+ {n:'Bow',d:()=>`<path d="M70 26 L58 16 L58 36Z M70 26 L82 16 L82 36Z" fill="#ec4899" stroke="#9d174d" stroke-width="1.6" stroke-linejoin="round"/><circle cx="70" cy="26" r="4" fill="#f9a8d4" stroke="#9d174d" stroke-width="1.4"/>`}
+];
+const PARTS=[['c','🎨 Colour'],['eyes','👀 Eyes'],['nose','👃 Nose'],['mouth','👄 Mouth'],['teeth','🦷 Teeth'],['glasses','👓 Glasses'],['hat','🧢 Hats & hair']];
+const PART_OPTS={eyes:EYES,nose:NOSES,mouth:MOUTHS,teeth:TEETH,glasses:GLASSES,hat:HATS};
+function randFace(){return {c:R(0,FACE_COLS.length-1),eyes:R(0,EYES.length-1),nose:R(0,NOSES.length-1),mouth:R(0,MOUTHS.length-1),teeth:Math.random()<.45?0:R(1,TEETH.length-1),glasses:Math.random()<.5?0:R(1,GLASSES.length-1),hat:Math.random()<.2?0:R(1,HATS.length-1)}}
+function faceSVG(fc){
+  const c=FACE_COLS[fc.c]||FACE_COLS[0],dk=shade(c,-.28),m=MOUTHS[fc.mouth]||MOUTHS[0];
+  return `<svg viewBox="-4 -12 108 108" xmlns="http://www.w3.org/2000/svg">`+
+   `<circle cx="16.5" cy="58" r="7" fill="${c}" stroke="${dk}" stroke-width="2.4"/><circle cx="83.5" cy="58" r="7" fill="${c}" stroke="${dk}" stroke-width="2.4"/>`+
+   `<circle cx="50" cy="56" r="34" fill="${c}" stroke="${dk}" stroke-width="2.6"/>`+
+   `<ellipse cx="36" cy="36" rx="11" ry="6" fill="#fff" opacity=".28" transform="rotate(-28 36 36)"/>`+
+   `<ellipse cx="29" cy="66" rx="5.5" ry="3.2" fill="#fb7185" opacity=".35"/><ellipse cx="71" cy="66" rx="5.5" ry="3.2" fill="#fb7185" opacity=".35"/>`+
+   (EYES[fc.eyes]||EYES[0]).d(c)+(NOSES[fc.nose]||NOSES[0]).d(c)+m.d(c)+(TEETH[fc.teeth]||TEETH[0]).d(m.ty)+
+   (GLASSES[fc.glasses]||GLASSES[0]).d(c)+(HATS[fc.hat]||HATS[0]).d(c)+`</svg>`;
+}
+
+const EMOJIS=['🦊','🐼','🦁','🐸','🤖','👽','🦄','🐲'];
+const ADJ=['Captain','Turbo','Super','Mega','Sir','Lady','Professor','Doctor','Mighty','Sneaky','Cosmic','Flash','Little','Big','Ninja','Royal','Speedy','Brainy'];
+const NOUN=['Waffle','Panda','Rocket','Noodle','Pickle','Thunder','Biscuit','Comet','Taco','Pixel','Muffin','Dragon','Bubbles','Zoom','Sprout','Sparkle','Nugget','Ponk'];
+function funName(){let n;do{n=pick(ADJ)+' '+pick(NOUN)}while(n.length>14);return n}
+const LEGACY_AURAS=[['#60a5fa','#1e3a8a'],['#a5f3fc','#0e7490'],['#a78bfa','#312e81'],['#fb923c','#be185d'],['#a3e635','#166534'],['#fb7185','#7f1d1d'],['#fde047','#c2410c'],['#f9a8d4','#be185d'],['#cbd5e1','#334155']];
+function avatar(p,size,extra=''){
+  if(p.face){const c=FACE_COLS[p.face.c]||FACE_COLS[0];return `<div class="ava face s-${size} ${extra}" style="--g1:${c};--g2:${shade(c,-.3)}">${faceSVG(p.face)}</div>`}
+  const a=LEGACY_AURAS[p.aura??0]||LEGACY_AURAS[0];
+  return `<div class="ava s-${size} ${extra}" style="--g1:${a[0]};--g2:${a[1]}"><span class="core">${p.emoji||'🙂'}</span>${p.acc?`<span class="acc">${p.acc}</span>`:''}</div>`;
+}
+let draft={face:{c:0,eyes:1,nose:2,mouth:0,teeth:0,glasses:0,hat:1},level:null},part='c';
+function renderPreview(boing){
+  const nm=$('newName').value.trim();
+  $('pvAva').innerHTML=avatar(draft,'xl','float'+(boing?' boing':''));
+  if(boing){const el=$('pvAva').firstChild;el.classList.remove('float');setTimeout(()=>el.classList.add('float'),560)}
+  $('pvName').textContent=nm||'Your hero';
+  $('pvName').style.setProperty('--pg',FACE_COLS[draft.face.c]);
+  $('pvTag').textContent=draft.level===null?'Pick a school year ↓':(draft.level===ADULT?'🌍 Grown-up · general knowledge':'📚 '+LV[draft.level].n+' · age '+LV[draft.level].age);
+}
+function renderParts(){
+  $('partTabs').innerHTML=PARTS.map(([k,n])=>`<button class="tab${k===part?' on':''}" data-k="${k}">${n}</button>`).join('');
+  $('partTabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{part=b.dataset.k;sfx.ping();renderParts()});
+  let html='';
+  if(part==='c') html=FACE_COLS.map((c,i)=>`<button class="fopt${i===draft.face.c?' on':''}" data-i="${i}"><span class="fcol" style="background:${c}"></span></button>`).join('');
+  else html=PART_OPTS[part].map((o,i)=>`<button class="fopt${i===draft.face[part]?' on':''}" data-i="${i}">${faceSVG({...draft.face,[part]:i})}<span>${o.n}</span></button>`).join('');
+  $('partOpts').innerHTML=html;
+  $('partOpts').querySelectorAll('.fopt').forEach(b=>b.onclick=()=>{draft.face[part]=+b.dataset.i;sfx.ping();renderParts();renderPreview(true)});
+}
+function renderAdd(boing){
+  renderParts();
+  $('newYears').innerHTML=LV.map((l,j)=>`<button class="yr${j===draft.level?' on':''}${j===ADULT?' adultChip':''}" data-j="${j}">${j===ADULT?'🧑 Grown-up':l.s}</button>`).join('');
+  $('newYears').querySelectorAll('.yr').forEach(b=>b.onclick=()=>{draft.level=+b.dataset.j;sfx.ping();renderAdd()});
+  $('emptyMsg').style.display=roster.length?'none':'block';
+  renderPreview(boing);
+}
+$('newName').oninput=()=>renderPreview(false);
+$('nameDice').onclick=()=>{$('newName').value=funName();sfx.ping();renderPreview(true)};
+$('surpriseBtn').onclick=()=>{
+  draft.face=randFace();
+  if(!$('newName').value.trim()||ADJ.some(a=>$('newName').value.startsWith(a+' ')))$('newName').value=funName();
+  sfx.gold();renderAdd(true);
+};
+function flash(msg){const b=$('addBtn');b.textContent=msg;setTimeout(()=>b.textContent='✨ Create player',1400)}
+$('addBtn').onclick=()=>{
+  const n=$('newName').value.trim();
+  if(!n){$('newName').focus();return flash('👆 Type a name first')}
+  if(draft.level===null)return flash('👆 Pick a school year');
+  const kind=draft.level===ADULT?'adult':'kid';
+  roster.push({name:n.slice(0,14),face:{...draft.face},kind,years:[draft.level],on:true});
+  $('newName').value='';draft={face:randFace(),level:null};
+  sfx.right();confetti(14,['✨','💙','⭐']);saveRoster();renderRoster();renderAdd(true);
+  $('playerList').scrollIntoView({behavior:'smooth',block:'start'});
+};
+document.querySelectorAll('#livesRow .chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('#livesRow .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');startLives=+b.dataset.l;sfx.ping()});
+function sw(id,get,set){const b=$(id);b.onclick=()=>{set(!get());b.classList.toggle('on',get())}}
+sw('swTimer',()=>useTimer,v=>useTimer=v);
+sw('swLevel',()=>useLevels,v=>useLevels=v);
+sw('swRead',()=>autoRead,v=>autoRead=v);
+sw('swSound',()=>soundOn,v=>{soundOn=v;$('muteBtn').textContent=v?'🔊':'🔇'});
+$('muteBtn').onclick=()=>{soundOn=!soundOn;$('muteBtn').textContent=soundOn?'🔊':'🔇';$('swSound').classList.toggle('on',soundOn)};
+
+/* ================= GAME ================= */
+$('startBtn').onclick=startGame;
+function startGame(){
+  const chosen=roster.filter(p=>p.on);
+  if(!chosen.length){$('startBtn').textContent='👆 Pick at least 1 player';setTimeout(()=>$('startBtn').textContent='🏓 PLAY',1500);return}
+  game={players:shuffle(chosen).map(p=>({...p,years:p.years.slice(),lives:startLives,right:0,asked:0,streak:0,best:0,outAt:null,score:0,lv:{}})),turn:-1,asked:0,level:1,solo:chosen.length===1,saved:{},newKeys:new Set()};
+  nextTurn();
+}
+const levelNow=()=>useLevels?1+Math.floor(game.asked/LEVEL_EVERY):1;
+const youngest=p=>Math.min(...p.years);
+function timeFor(p){const base=p.kind==='adult'?LV[ADULT].t:LV[youngest(p)].t;return Math.max(MIN_TIME,base-2*(levelNow()-1))}
+const alive=()=>game.players.filter(p=>p.lives>0);
+
+function nextTurn(){
+  const al=alive();
+  if((!game.solo&&al.length<=1)||(game.solo&&!al.length))return endGame();
+  let t=game.turn;do{t=(t+1)%game.players.length}while(game.players[t].lives<=0);
+  game.turn=t;const p=game.players[t];
+  const L=levelNow();
+  $('lvlPill').textContent='⚡ Level '+L;
+  $('qPill').textContent='Q '+(game.asked+1)+(useLevels?' · next level in '+(LEVEL_EVERY-game.asked%LEVEL_EVERY):'');
+  $('prog').style.width=useLevels?((game.asked%LEVEL_EVERY)/LEVEL_EVERY*100)+'%':'0%';
+  $('hoEm').innerHTML=avatar(p,'lg','ring boing');$('hoName').textContent=p.name;
+  $('hoMsg').textContent=pick(["it's your turn!","show us that brain power 🧠","you've got this 💪","the ball's in your court 🏓","think fast ⚡","smash it 💥"]);
+  $('hoPool').textContent=(p.kind==='adult'?'🌍 General knowledge':'📚 '+poolLabel(p))+(useTimer?' · ⏱️ '+timeFor(p)+'s':'');
+  renderBoard('board1');show('handoff');sfx.ping();
+  if(L>game.level){game.level=L;levelUp(L)}
+}
+function levelUp(L){
+  const lis=[`🧠 Harder questions for everyone`,`⏱️ Timer down 2 seconds (min ${MIN_TIME}s)`];
+  if(L>=4) lis.push('🚀 Kids move up to the next year group!');
+  $('lvlUpTxt').textContent='LEVEL '+L;
+  const done=L-1;saveLevel(done);
+  const rk=game.players.slice().sort((a,b)=>(b.lv[done]||0)-(a.lv[done]||0));
+  $('lvlScores').innerHTML=`<div class="lbl" style="font-size:.78rem;color:var(--muted);font-weight:700;letter-spacing:.5px">📊 LEVEL ${done} SCOREBOARD</div>`+
+    rk.map((p,i)=>`<div class="hrow"><span class="rk">${['🥇','🥈','🥉'][i]||i+1}</span>${avatar(p,'xs')}<span class="nm"><b>${esc(p.name)}</b></span><span class="pt">${fmt(p.lv[done]||0)}</span></div>`).join('');
+  $('lvlUpList').innerHTML=lis.map(x=>`<li>${x}</li>`).join('')+game.players.filter(p=>p.lives>0).map(p=>`<li style="display:flex;align-items:center;gap:8px">${avatar(p,'xs')} ${esc(p.name)}: ${useTimer?timeFor(p)+'s':'no timer'}</li>`).join('');
+  $('lvlUp').classList.add('on');sfx.lvl();confetti(30,['⚡','💙','⭐','🏓']);
+}
+$('lvlGo').onclick=()=>$('lvlUp').classList.remove('on');
+
+function renderBoard(id){
+  const b=$(id);b.innerHTML='';
+  game.players.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='mini'+(i===game.turn?' turn':'')+(p.lives<=0?' out':'');
+    const h=p.lives>0?(p.lives<=6?'💙'.repeat(p.lives):'💙×'+p.lives):'💀 out';
+    d.innerHTML=`<div style="display:flex;justify-content:center;margin-bottom:3px">${avatar(p,'xs')}</div><b>${esc(p.name)}</b><div class="hearts">${h}</div><div class="score">⭐ ${fmt(p.score)}</div>${p.streak>=3?'🔥'+p.streak:''}`;
+    b.appendChild(d);
+  });
+}
+
+/* pick a question for a player at current level */
+function drawFrom(y,t){
+  for(const tt of [t,t-1,t+1,t-2,t+2]){
+    if(tt<1||tt>3||!BANK[y][tt].length) continue;
+    const key=y+'_'+tt;
+    if(!decks[key]||!decks[key].length) decks[key]=shuffle(BANK[y][tt].map((_,i)=>i));
+    return {...BANK[y][tt][decks[key].pop()],y,t:tt};
+  }
+  return null;
+}
+function getQuestion(p){
+  const L=levelNow();let y,t;
+  if(p.kind==='adult'){y=ADULT;t=Math.min(3,L)}
+  else{const base=pick(p.years),d=base*3+(L-1),yy=Math.floor(d/3);y=Math.min(KID_MAX,yy);t=yy>KID_MAX?3:d%3+1}
+  const genChance=p.kind==='adult'?.12:(y<=6?.35:.25);
+  let q=null;
+  if(Math.random()<genChance){q=genMath(y,t);q.y=y;q.t=t}
+  else q=drawFrom(y,t)||Object.assign(genMath(y,t),{y,t});
+  return q;
+}
+
+let tmr=null,timeLeft=0,timeMax=0,answered=false;
+$('readyBtn').onclick=askQuestion;
+function askQuestion(){
+  const p=game.players[game.turn];
+  const q=getQuestion(p);
+  const nOpts=(p.kind==='kid'&&youngest(p)<=2)?3:4;
+  const wrongs=shuffle(q.w).slice(0,nOpts-1);
+  const opts=shuffle([q.a,...wrongs]);
+  const golden=Math.random()<.15;
+  game.cur={q,golden};answered=false;
+  $('qWho').innerHTML=`<span style="display:inline-flex;align-items:center;gap:8px">${avatar(p,'xs')} ${esc(p.name)}</span>`;
+  $('qCat').textContent=CATS[q.c]||q.c;
+  $('qYear').textContent=LV[q.y].n;
+  $('qDiff').textContent=DIFF[q.t];$('qDiff').className='cat d'+q.t;
+  $('qText').textContent=q.q;
+  $('qText').className='qtext'+(p.kind==='kid'?' kid':'');
+  $('golden').style.display=golden?'block':'none';
+  const box=$('opts');box.innerHTML='';box.className='opts'+(nOpts===3?' kidopts':'');
+  opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt o'+i;b.dataset.v=o;
+    b.innerHTML=`<span class="k">${'ABCD'[i]}</span><span>${esc(o)}</span>`;
+    b.onclick=()=>answer(o,b);box.appendChild(b);
+  });
+  renderBoard('board2');show('question');
+  if(golden)sfx.gold();
+  const spoken=q.q.replace(/×/g,' times ').replace(/÷/g,' divided by ').replace(/−/g,' minus ').replace(/²/g,' squared ').replace(/√/g,' square root of ');
+  $('speakBtn').onclick=()=>say(spoken+'. '+opts.join(', or ')+'?');
+  if(autoRead&&p.kind==='kid'&&youngest(p)<=2)setTimeout(()=>$('speakBtn').click(),400);
+  clearInterval(tmr);
+  if(useTimer){
+    timeMax=timeFor(p);timeLeft=timeMax;$('timer').style.display='';$('barWrap').style.display='';
+    $('bar').style.transition='none';$('bar').style.width='100%';void $('bar').offsetWidth;$('bar').style.transition='';
+    updTimer();
+    tmr=setInterval(()=>{timeLeft--;updTimer();if(timeLeft<=5&&timeLeft>0)sfx.tick();if(timeLeft<=0){clearInterval(tmr);answer(null,null)}},1000);
+  }else{$('timer').style.display='none';$('barWrap').style.display='none'}
+}
+function updTimer(){$('timer').textContent='⏱ '+timeLeft;$('timer').classList.toggle('hurry',timeLeft<=5);$('bar').style.width=(timeLeft/timeMax*100)+'%'}
+
+function answer(val,btn){
+  if(answered)return;answered=true;clearInterval(tmr);
+  try{speechSynthesis.cancel()}catch(e){}
+  const p=game.players[game.turn],c=game.cur,ok=val===c.q.a;
+  p.asked++;game.asked++;
+  document.querySelectorAll('.opt').forEach(b=>{if(b.dataset.v===c.q.a)b.classList.add('right');else if(b===btn)b.classList.add('wrong');else b.classList.add('dim')});
+  let face,verdict,lifeMsg='',outHtml='',pts=0;
+  if(ok){
+    p.right++;p.streak++;p.best=Math.max(p.best,p.streak);sfx.right();
+    const L=levelNow();
+    pts=Math.round((100+(useTimer?Math.max(0,timeLeft)*10:50))*L*(c.golden?2:1))+(p.streak>=3?50*L:0);
+    p.score+=pts;p.lv[L]=(p.lv[L]||0)+pts;
+    [face,verdict]=pick([["🎉","Correct!"],["🤩","Brilliant!"],["🏓","PONK! Nailed it!"],["🧠","Big brain!"],["🌟","Superstar!"],["💥","Smashed it!"],["😎","Too easy!"]]);
+    if(c.golden){p.lives++;lifeMsg=`⭐ Golden Ball! +1 💙 for ${p.name}!`;face='🥇'}
+    else if(p.streak>=3)lifeMsg=`🔥 ${p.streak} in a row! On fire!`;
+    else lifeMsg='Lives safe 💙';
+    confetti(c.golden?40:16,['💙','🏓','⭐','✨','🎉']);
+  }else{
+    p.streak=0;p.lives--;sfx.wrong();
+    [face,verdict]=val===null?["⏰","Time's up!"]:pick([["😱","Oh no!"],["🙈","Oopsie!"],["😵‍💫","Bonk!"],["🫣","Not quite!"],["🐸","Ribbit… wrong!"]]);
+    lifeMsg=p.lives>0?`💔 ${p.name} loses a life · ${p.lives} left`:'';
+    if(p.lives<=0){p.outAt=game.asked;outHtml=`<div class="out-banner">💀 ${esc(p.name)} is OUT! Great playing 👏</div>`}
+  }
+  setTimeout(()=>{
+    $('rFace').textContent=face;$('rVerdict').textContent=verdict;$('rVerdict').style.color=ok?'#4ade80':'#fb7185';
+    $('rAns').innerHTML=`${esc(c.q.q)}<br><b>✅ ${esc(c.q.a)}</b>`;
+    $('rLife').textContent=lifeMsg;$('rOut').innerHTML=outHtml;
+    $('rPts').innerHTML=ok?`<span class="ptsPop">+${fmt(pts)} ⭐</span>`:'';
+    const left=alive().length,over=(!game.solo&&left<=1)||(game.solo&&!left);
+    $('nextBtn').textContent=over?'🏆 See the champion!':(game.solo?'Next question ➡️':'Next player ➡️');
+    renderBoard('board3');show('result');
+  },1100);
+}
+$('nextBtn').onclick=nextTurn;
+$('quitBtn').onclick=()=>{clearInterval(tmr);show('setup')};
+
+function endGame(){
+  clearInterval(tmr);
+  const ps=game.players.slice().sort((a,b)=>(b.lives-a.lives)||((b.outAt||1e9)-(a.outAt||1e9))||(b.right-a.right));
+  const ch=ps[0];
+  for(let l=1;l<=levelNow();l++)saveLevel(l);saveGame();
+  $('wAva').innerHTML=avatar(ch,'xl','float');
+  $('wName').textContent=ch.name;
+  $('wSub').textContent=game.solo?`${ch.right} right · best streak ${ch.best} 🔥 · reached level ${levelNow()}`:`${ch.lives} 💙 left · reached level ${levelNow()} ⚡`;
+  const medals=['🥇','🥈','🥉'];
+  $('scoreTable').innerHTML=ps.map((p,i)=>`<tr><td><span style="display:inline-flex;align-items:center;gap:8px">${medals[i]||'🏅'} ${avatar(p,'xs')} <b>${esc(p.name)}</b></span></td><td>⭐ <b style="color:#fde68a">${fmt(p.score)}</b> · ✅ ${p.right}/${p.asked}</td></tr>`).join('');
+  const top=game.players.slice().sort((a,b)=>b.score-a.score)[0];
+  if(top!==ch&&top.score>ch.score)$('wSub').textContent+=` · ⭐ Top scorer: ${top.name}`;
+  const maxL=levelNow();
+  $('lvGrid').innerHTML=`<tr><th>📊 Points per level</th>${Array.from({length:maxL},(_,i)=>`<th>L${i+1}</th>`).join('')}<th>Total</th></tr>`+
+    ps.map(p=>`<tr><td><span style="display:inline-flex;align-items:center;gap:6px">${avatar(p,'xs')} ${esc(p.name)}</span></td>${Array.from({length:maxL},(_,i)=>`<td>${fmt(p.lv[i+1]||0)}</td>`).join('')}<td class="tot">${fmt(p.score)}</td></tr>`).join('');
+  show('winner');sfx.win();confetti(60,['🏆','💙','🏓','🎉','⭐','✨','🥳']);
+}
+$('againBtn').onclick=startGame;
+$('homeBtn').onclick=()=>show('setup');
+
+/* ================= HALL OF FAME ================= */
+function loadHof(){try{const h=JSON.parse(localStorage.getItem('ppk_open_hof')||'null');if(h&&h.levels)return h}catch(e){}return {levels:{},games:[]}}
+function storeHof(h){try{localStorage.setItem('ppk_open_hof',JSON.stringify(h))}catch(e){}}
+const today=()=>new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+function entry(p,pts){const k=Math.random().toString(36).slice(2);game.newKeys.add(k);return {k,name:p.name,face:p.face?{...p.face}:null,emoji:p.emoji,aura:p.aura??0,acc:p.acc||'',pool:p.kind==='adult'?'Grown-up':p.years.slice().sort((a,b)=>a-b).map(i=>LV[i].s).join('+'),pts,date:today()}}
+function saveLevel(L){
+  if(!game||game.saved[L])return;game.saved[L]=true;
+  const h=loadHof();const arr=h.levels[L]||[];
+  game.players.forEach(p=>{if(p.lv[L])arr.push(entry(p,p.lv[L]))});
+  if(arr.length){h.levels[L]=arr.sort((a,b)=>b.pts-a.pts).slice(0,10);storeHof(h)}
+}
+function saveGame(){
+  if(game.savedGame)return;game.savedGame=true;
+  const h=loadHof();game.players.forEach(p=>{if(p.score)h.games.push(entry(p,p.score))});
+  h.games=h.games.sort((a,b)=>b.pts-a.pts).slice(0,10);storeHof(h);
+}
+let hofTab='games',hofPrev='setup',resetArm=false;
+function openHof(){hofPrev=document.querySelector('.screen.on').id;renderHof();show('hof')}
+function renderHof(){
+  const h=loadHof();
+  const lvls=[...new Set([1,2,3,...Object.keys(h.levels).map(Number)])].sort((a,b)=>a-b);
+  const tabs=[['games','🏆 Best games'],...lvls.map(l=>[String(l),'⚡ Level '+l])];
+  $('hofTabs').innerHTML=tabs.map(([k,n])=>`<button class="tab${k===hofTab?' on':''}" data-k="${k}">${n}</button>`).join('');
+  $('hofTabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{hofTab=b.dataset.k;sfx.ping();renderHof()});
+  const list=hofTab==='games'?h.games:(h.levels[hofTab]||[]);
+  const isNew=k=>game&&game.newKeys&&game.newKeys.has(k);
+  $('hofList').innerHTML=list.length?list.map((e,i)=>`<div class="hrow${isNew(e.k)?' new':''}"><span class="rk">${['🥇','🥈','🥉'][i]||i+1}</span>${avatar(e,'sm')}<span class="nm"><b>${esc(e.name)}${isNew(e.k)?'<span class="newtag">NEW</span>':''}</b><span>${esc(e.pool)} · ${esc(e.date)}</span></span><span class="pt">${fmt(e.pts)}</span></div>`).join('')
+    :`<div class="empty">No scores yet for ${hofTab==='games'?'full games':'Level '+hofTab}.<br>Go play! 🏓</div>`;
+}
+$('hofBtn').onclick=openHof;$('hofBtn2').onclick=openHof;
+$('hofBack').onclick=()=>show(hofPrev);
+$('hofReset').onclick=()=>{
+  if(!resetArm){resetArm=true;$('hofReset').textContent='⚠️ Tap again to clear';setTimeout(()=>{resetArm=false;$('hofReset').textContent='🗑️ Clear all scores'},2500);return}
+  storeHof({levels:{},games:[]});resetArm=false;$('hofReset').textContent='🗑️ Clear all scores';renderHof();
+};
+
+function confetti(n,set){for(let i=0;i<n;i++){const s=document.createElement('div');s.className='confetti';s.textContent=pick(set);s.style.left=Math.random()*100+'vw';s.style.animationDuration=(1.8+Math.random()*1.8)+'s';s.style.animationDelay=(Math.random()*.6)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),4500)}}
+renderRoster();renderAdd();
+</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script>
+</body>
+</html>
